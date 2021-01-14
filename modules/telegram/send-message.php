@@ -20,6 +20,5 @@ function message_to_telegram($text) {
     // Закрываем соединение с сервером
     curl_close( $ch );
     
-    var_dump($result);
-    echo "<pre>";
+    
 }
