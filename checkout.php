@@ -1,6 +1,8 @@
 <?php 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/configs/configs.php";
+include $_SERVER['DOCUMENT_ROOT'] . "/modules/telegram/send-message.php";
 ?>
 
    <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
@@ -20,7 +22,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
     <?php
     if(isset($_POST) and $_SERVER["REQUEST_METHOD"]=="POST") {
 
-        $sql_user = "SELECT * FROM users WHERE phone LIKE '" . $_POST["phone"] . "' AND email LIKE '" . $_POST["email"] . "'";
+        $sql_user = "SELECT * FROM user WHERE name LIKE '" . $_POST["fname"] . "' AND email LIKE '" . $_POST["email"] . "'";
         $user_id = 0;
         $result_user = $conn->query($sql_user);
 
@@ -28,8 +30,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
             $user = mysqli_fetch_assoc($result_user);
             $user_id = $user["id"];
         } else {
-            $sql = "INSERT INTO users (login, phone) VALUES ('" . $_POST["name"] . "
-                ', '" . $_POST["phone"] . "')";
+            $sql = "INSERT INTO user (name, email) VALUES ('" . $_POST["fname"] . "', '" . $_POST["email"] . "')";
             if($conn->query($sql)) {
                 echo "User added!";
                 // Переменная $user_id = id пользователя
@@ -39,13 +40,13 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
             }
         }
 
-        $sql = "INSERT INTO `orders` (`id`, `user_id`, `first_name`, `last_name`, `shipping_method`, `delivery_service`, `address`, `region_state`, `zip_postal_code`, `phone`, `email`, `product_name`, `count`)
+        $sql_order = "INSERT INTO `orders` (`user_id`, `first_name`, `last_name`, `shipping_method`, `delivery_service`, `address`, `region_state`, `zip_postal_code`, `phone`, `email`, `product_name`)
          VALUES ('" . $user_id . "', '" . $_POST["fname"] . "', '" . $_POST["lname"] . "', '" . $_POST["smethod"] . "', '" . $_POST["dservice"] . "', '"
-          . $_POST["adress"] . "', '" . $_POST["state"] . "', '" . $_POST["pcode"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $_COOKIE["basket"] . "', '" . $_POST["adress"] . "');";
+          . $_POST["adress"] . "', '" . $_POST["state"] . "', '" . $_POST["pcode"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . 1 . "');";
         if($conn->query($sql_order)) {
-            /* header("Location: /"); */
+            header("Location: /");
             // Очищаем куки
-            setcookie("basket", "", 0, "/");
+            //setcookie("basket", "", 0, "/");
             // Выводим на экран "Заказ оформлен"
             echo "<h2>Заказ оформлен</h2> <br/>
             <a href='/'> На главную </a>";
@@ -70,13 +71,13 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-first-name">First Name</label>
-                                    <input type="text" id="form-first-name" name="fname">
+                                    <input type="text" id="form-first-name" name="fname" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-last-name">Last Name</label>
-                                    <input type="text" id="form-last-name" name="lname">
+                                    <input type="text" id="form-last-name" name="lname" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -84,9 +85,9 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
                                     <label for="form-company-name">* Shipping method</label>
                                     <select id="form-country" name="smethod">
                                         <option value="0" selected>Select a Shipping method</option>
-                                        <option value="BD">Pickup</option>
-                                        <option value="US">Prepay</option>
-                                        <option value="US">Payment on delivery</option>
+                                        <option value="Самовывоз">Самовывоз</option>
+                                        <option value="Предоплата">Предоплата</option>
+                                        <option value="При получении">При получении</option>
                                     </select>
                                 </div>
                             </div>
@@ -95,48 +96,42 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
                                     <label for="form-country">* Delivery service</label>
                                     <select id="form-country" name="dservice">
                                         <option value="0" selected>Select a Delivery service</option>
-                                        <option value="BD">Новая Почта</option>
-                                        <option value="US">Укрпочта</option>
-                                        <option value="UK">Интайм</option>
-                                        <option value="TR">Деливери</option>
-                                        <option value="CA">Мист Экспресс</option>
+                                        <option value="Новая Почта">Новая Почта</option>
+                                        <option value="Укрпочта">Укрпочта</option>
+                                        <option value="Интайм">Интайм</option>
+                                        <option value="Деливери">Деливери</option>
+                                        <option value="Мист Экспресс">Мист Экспресс</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-box__single-group">
                                     <label for="form-address-1">Street Address</label>
-                                    <input type="text" id="form-address-1" placeholder="House number and street name" name="adress">
+                                    <input type="text" id="form-address-1" placeholder="House number and street name" name="adress" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-state">* Region / State</label>
-                                    <select id="form-state">
-                                        <option value="Dha" selected>Dhaka</option>
-                                        <option value="Kha">Khulna</option>
-                                        <option value="Raj">Rajshahi</option>
-                                        <option value="Syl">Sylet</option>
-                                        <option value="Chi">Chittagong</option>
-                                    </select>
+                                    <input type="text" id="form-state" name="state">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-zipcode">* Zip/Postal Code</label>
-                                    <input type="text" id="form-zipcode">
+                                    <input type="text" id="form-zipcode" name="pcode">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-phone">Phone</label>
-                                    <input type="text" id="form-phone">
+                                    <input type="tel" id="form-phone" name="phone" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-email">Email Address</label>
-                                    <input type="email" id="form-email">
+                                    <input type="email" id="form-email" name="email" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -166,83 +161,9 @@ include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
                                     <label for="form-additional-info">Order notes</label>
                                     <textarea  id="form-additional-info" rows="5" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                 </div>
-                            </div>
-                            <!-- Add Another Shipping Address -->
-                            <div class="col-md-12">
-                                <div class="m-tb-20">
-                                    <label for="shipping-account">
-                                        <input type="checkbox" name="check-account" class="shipping-account"  id="shipping-account">
-                                        <span>Ship to a different address?</span>
-                                    </label>
-                                    <div class="toogle-form open-shipping-account">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-first-name">First Name</label>
-                                                    <input type="text" id="shipping-form-first-name">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-last-name">Last Name</label>
-                                                    <input type="text" id="shipping-form-last-name">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-company-name">Company Name</label>
-                                                    <input type="text" id="shipping-form-company-name">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-country">* Country</label>
-                                                    <select id="shipping-form-country">
-                                                        <option value="select-country" selected>Select a country</option>
-                                                        <option value="BD">Bangladesh</option>
-                                                        <option value="US">USA</option>
-                                                        <option value="UK">UK</option>
-                                                        <option value="TR">Turkey</option>
-                                                        <option value="CA">Canada</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-address-1">Street Address</label>
-                                                    <input type="text" id="shipping-form-address-1" placeholder="House number and street name">
-                                                    <input type="text" class="m-t-10" id="shipping-form-address-2" placeholder="Apartment, suite, unit etc.">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-state">* Region / State</label>
-                                                    <input type="text" placeholder="Enter Region / State" name="state" id="shipping-form-state">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-zipcode">* Zip/Postal Code</label>
-                                                    <input type="text" id="shipping-form-zipcode" name="pcode">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-phone">Phone</label>
-                                                    <input type="text" id="shipping-form-phone" name="phone">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-box__single-group">
-                                                    <label for="shipping-form-email">Email Address</label>
-                                                    <input type="email" id="shipping-form-email" name="email">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  <!-- End Another Shipping Address -->
+                            </div> 
                         </div>
+                        <button class="btn btn--block btn--small btn--blue btn--uppercase btn--weight" type="submit">PLACE ORDER</button>
                     </form> 
                 </div> <!-- End Client Shipping Address -->
                 
