@@ -96,7 +96,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                     <div class="col-xl-4 col-lg-6 col-12">
                         <div class="footer__about">
                             <div class="footer__logo">
-                                <a href="index.html" class="footer__logo-link">
+                                <a href="index.php" class="footer__logo-link">
                                     <img src="assets/img/logo/logo-color.jpg" alt="" class="footer__logo-img">
                                 </a>
                             </div>
