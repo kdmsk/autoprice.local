@@ -16,6 +16,12 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         </div>
     </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
 
+    <?php
+        $sql = "INSERT INTO `orders` (`id`, `user_id`, `first_name`, `last_name`, `shipping_method`, `delivery_service`, `address`, `phone`, `product_name`, `count`, `created_at`, `status_id`, `status`)
+         VALUES ('" . $_POST["fname"] . "', '" . $_POST["description"] . "', '" . $_POST["content"] . "', '" . $_POST["category"] . "', '" . $_POST["image"] . "');"
+        $result = $conn->query($sql)
+    ?>
+
     <!-- ::::::  Start  Main Container Section  ::::::  -->
     <main id="main-container" class="main-container">
         <div class="container">
@@ -30,31 +36,36 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-first-name">First Name</label>
-                                    <input type="text" id="form-first-name">
+                                    <input type="text" id="form-first-name" name="fname">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-box__single-group">
                                     <label for="form-last-name">Last Name</label>
-                                    <input type="text" id="form-last-name">
+                                    <input type="text" id="form-last-name" name="lname">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-box__single-group">
-                                    <label for="form-company-name">Company Name</label>
-                                    <input type="text" id="form-company-name">
+                                    <label for="form-company-name">* Shipping method</label>
+                                    <select id="form-country" name="smethod">
+                                        <option value="0" selected>Select a Shipping method</option>
+                                        <option value="BD">Pickup</option>
+                                        <option value="US">Prepay</option>
+                                        <option value="US">Payment on delivery</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-box__single-group">
-                                    <label for="form-country">* Country</label>
-                                    <select id="form-country">
-                                        <option value="select-country" selected>Select a country</option>
-                                        <option value="BD">Bangladesh</option>
-                                        <option value="US">USA</option>
-                                        <option value="UK">UK</option>
-                                        <option value="TR">Turkey</option>
-                                        <option value="CA">Canada</option>
+                                    <label for="form-country">* Delivery service</label>
+                                    <select id="form-country" name="dservice">
+                                        <option value="0" selected>Select a Delivery service</option>
+                                        <option value="BD">Новая Почта</option>
+                                        <option value="US">Укрпочта</option>
+                                        <option value="UK">Интайм</option>
+                                        <option value="TR">Деливери</option>
+                                        <option value="CA">Мист Экспресс</option>
                                     </select>
                                 </div>
                             </div>
