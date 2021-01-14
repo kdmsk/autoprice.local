@@ -1,5 +1,6 @@
 <?php 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
 ?>
 
    <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
@@ -17,9 +18,42 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
     </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
 
     <?php
-        $sql = "INSERT INTO `orders` (`id`, `user_id`, `first_name`, `last_name`, `shipping_method`, `delivery_service`, `address`, `phone`, `product_name`, `count`, `created_at`, `status_id`, `status`)
-         VALUES ('" . $_POST["fname"] . "', '" . $_POST["description"] . "', '" . $_POST["content"] . "', '" . $_POST["category"] . "', '" . $_POST["image"] . "');"
-        $result = $conn->query($sql)
+    if(isset($_POST) and $_SERVER["REQUEST_METHOD"]=="POST") {
+
+        $sql_user = "SELECT * FROM users WHERE phone LIKE '" . $_POST["phone"] . "' AND email LIKE '" . $_POST["email"] . "'";
+        $user_id = 0;
+        $result_user = $conn->query($sql_user);
+
+        if($result_user->num_rows > 0) {
+            $user = mysqli_fetch_assoc($result_user);
+            $user_id = $user["id"];
+        } else {
+            $sql = "INSERT INTO users (login, phone) VALUES ('" . $_POST["name"] . "
+                ', '" . $_POST["phone"] . "')";
+            if($conn->query($sql)) {
+                echo "User added!";
+                // Переменная $user_id = id пользователя
+                $user_id = $conn->insert_id;
+            } else {
+                /* echo "Error: " . $sql . "<br>" . $conn->error; */
+            }
+        }
+
+        $sql = "INSERT INTO `orders` (`id`, `user_id`, `first_name`, `last_name`, `shipping_method`, `delivery_service`, `address`, `region_state`, `zip_postal_code`, `phone`, `email`, `product_name`, `count`)
+         VALUES ('" . $user_id . "', '" . $_POST["fname"] . "', '" . $_POST["lname"] . "', '" . $_POST["smethod"] . "', '" . $_POST["dservice"] . "', '"
+          . $_POST["adress"] . "', '" . $_POST["state"] . "', '" . $_POST["pcode"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $_COOKIE["basket"] . "', '" . $_POST["adress"] . "');";
+        if($conn->query($sql_order)) {
+            /* header("Location: /"); */
+            // Очищаем куки
+            setcookie("basket", "", 0, "/");
+            // Выводим на экран "Заказ оформлен"
+            echo "<h2>Заказ оформлен</h2> <br/>
+            <a href='/'> На главную </a>";
+
+            message_to_telegram('Ваш заказ оформлен!');
+            
+        }
+    }
     ?>
 
     <!-- ::::::  Start  Main Container Section  ::::::  -->
@@ -72,8 +106,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             <div class="col-md-12">
                                 <div class="form-box__single-group">
                                     <label for="form-address-1">Street Address</label>
-                                    <input type="text" id="form-address-1" placeholder="House number and street name">
-                                    <input type="text" class="m-t-10" id="form-address-2" placeholder="Apartment, suite, unit etc.">
+                                    <input type="text" id="form-address-1" placeholder="House number and street name" name="adress">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -184,31 +217,25 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                             <div class="col-md-6">
                                                 <div class="form-box__single-group">
                                                     <label for="shipping-form-state">* Region / State</label>
-                                                    <select id="shipping-form-state">
-                                                        <option value="Dha" selected>Dhaka</option>
-                                                        <option value="Kha">Khulna</option>
-                                                        <option value="Raj">Rajshahi</option>
-                                                        <option value="Syl">Sylet</option>
-                                                        <option value="Chi">Chittagong</option>
-                                                    </select>
+                                                    <input type="text" placeholder="Enter Region / State" name="state" id="shipping-form-state">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-box__single-group">
                                                     <label for="shipping-form-zipcode">* Zip/Postal Code</label>
-                                                    <input type="text" id="shipping-form-zipcode">
+                                                    <input type="text" id="shipping-form-zipcode" name="pcode">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-box__single-group">
                                                     <label for="shipping-form-phone">Phone</label>
-                                                    <input type="text" id="shipping-form-phone">
+                                                    <input type="text" id="shipping-form-phone" name="phone">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-box__single-group">
                                                     <label for="shipping-form-email">Email Address</label>
-                                                    <input type="email" id="shipping-form-email">
+                                                    <input type="email" id="shipping-form-email" name="email">
                                                 </div>
                                             </div>
                                         </div>
