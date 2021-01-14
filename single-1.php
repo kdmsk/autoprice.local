@@ -1,5 +1,19 @@
-<?php 
+<?php
+// подключим базу даных 
+include "configs/db.php";
+//  подключаем шапку сайта  
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+
+// если поступил GET  с id товара  проводим запрос в базу для получения даного товара
+$_GET['id'] = 19;
+if (isset($_GET['id'])) {
+    $sql = "SELECT * FROM product WHERE id = " . $_GET['id'];
+    $result = $conn->query($sql);
+    $product = mysqli_fetch_assoc($result);
+    // запрос для получения категории товара
+    $catResult = $conn->query('SELECT * FROM cat WHERE id=' . $product['cat_id']);
+    $categore = mysqli_fetch_assoc($catResult);
+}
 ?>
     
    <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
@@ -26,35 +40,22 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="product-gallery-box m-b-60">
+                                    <!-- БЛОК СЛАЙДЕР С КАРТИНКОЙ ТОВАРА -->
                                     <div class="product-image--large overflow-hidden">
-                                        <img class="img-fluid" id="img-zoom" src="assets/img/product/gallery/gallery-large/product-gallery-large-1.jpg" data-zoom-image="assets/img/product/gallery/gallery-large/product-gallery-large-1.jpg" alt="">
+                                        <img class="img-fluid" id="img-zoom" 
+                                         src="<?php echo $product['photo']; ?> "  
+                                         data-zoom-image="<?php echo $product['photo']; ?> " 
+                                         alt="">
                                     </div>
                                     <div class="pos-relative m-t-30">
                                         <div id="gallery-zoom" class="product-image--thumb product-image--thumb-horizontal overflow-hidden swiper-outside-arrow-hover m-lr-30">
                                             <div class="swiper-wrapper">
+                                            <!--  СЛАЙДЕР С КАРТИНКАМИ ТОВАРА -->
                                                 <div class="swiper-slide">
-                                                    <a class="zoom-active" data-image="assets/img/product/gallery/gallery-large/product-gallery-large-1.jpg" data-zoom-image="assets/img/product/gallery/gallery-large/product-gallery-large-1.jpg">
-                                                        <img class="img-fluid" src="assets/img/product/gallery/gallery-thumb/product-gallery-thumb-1.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <a data-image="assets/img/product/gallery/gallery-large/product-gallery-large-2.jpg" data-zoom-image="assets/img/product/gallery/gallery-large/product-gallery-large-2.jpg">
-                                                        <img class="img-fluid" src="assets/img/product/gallery/gallery-thumb/product-gallery-thumb-2.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <a data-image="assets/img/product/gallery/gallery-large/product-gallery-large-3.jpg" data-zoom-image="assets/img/product/gallery/gallery-large/product-gallery-large-3.jpg">
-                                                        <img class="img-fluid" src="assets/img/product/gallery/gallery-thumb/product-gallery-thumb-3.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <a data-image="assets/img/product/gallery/gallery-large/product-gallery-large-4.jpg" data-zoom-image="assets/img/product/gallery/gallery-large/product-gallery-large-4.jpg">
-                                                        <img class="img-fluid" src="assets/img/product/gallery/gallery-thumb/product-gallery-thumb-4.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="swiper-slide">
-                                                    <a data-image="assets/img/product/gallery/gallery-large/product-gallery-large-5.jpg" data-zoom-image="assets/img/product/gallery/gallery-large/product-gallery-large-5.jpg">
-                                                        <img class="img-fluid" src="assets/img/product/gallery/gallery-thumb/product-gallery-thumb-5.jpg" alt="">
+                                                    <a class="zoom-active" data-image="" data-zoom-image="">
+                                                        <img class="img-fluid" 
+                                                        src="<?php echo $product['photo']; ?>" 
+                                                        alt="">
                                                     </a>
                                                 </div>
                                             </div>
@@ -69,8 +70,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             </div>
                             <div class="col-md-6">
                                 <div class="product-details-box">
-                                    <h5 class="section-content__title">Canon Vista Fhd 4k Camcorder 2214c002</h5>
-                                    <span class="text-reference">Reference: Jhon Doe</span>
+                                    <h5 class="section-content__title"><?php echo $product['title']; ?></h5>
+                                    <span class="text-reference">Бренд: <?php echo $product['brand']; ?></span>
                                     <div class="review-box">
                                         <ul class="product__review m-t-10 m-b-15">
                                             <li class="product__review--fill"><i class="icon-star"></i></li>
@@ -79,49 +80,29 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                             <li class="product__review--fill"><i class="icon-star"></i></li>
                                             <li class="product__review--blank"><i class="icon-star"></i></li>
                                         </ul>
-                                        <a href="#product-review" class="link--gray link--icon-left  m-b-5"><i class="fal fa-comment-dots"></i>Read reviews (1) </a>
-                                        <a href="#modalReview" data-toggle="modal" class="link--gray link--icon-left m-b-5"><i class="fal fa-edit"></i> Write a review</a>
+                                        <a href="#product-review" class="link--gray link--icon-left  m-b-5"><i class="fal fa-comment-dots"></i>Отзывы  </a>
+                                        <a href="#modalReview" data-toggle="modal" class="link--gray link--icon-left m-b-5"><i class="fal fa-edit"></i> Сровнить</a>
                                     </div>
                                     <div class="product__price">
-                                        <span class="product__price-del">$35.90</span>
-                                        <span class="product__price-reg">$31.69</span>
+                                        <span class="product__price-reg"><?php echo $product['prise']; ?> грн.</span>
                                     </div>
                                     <div class="product__desc m-t-25 m-b-30">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, commodi expedita, non ducimus fugiat praesentium, quas iusto voluptatem voluptatibus ex est facilis distinctio. Corporis repudiandae iste placeat temporibus illo autem labore saepe odit nemo facilis dolorem quos fuga hic, atque eveniet repellendus nesciunt consequatur sed at eum aspernatur fugiat numquam veritatis, voluptas quae. </p>
+                                        <p><?php echo $product['descriptions']; ?> </p>
                                     </div>
-                                    <div class="product-var p-t-30">
-                                        <div class="product-size product-var__item">
-                                            <span class="product-var__text">Size</span>
-                                            <select id="product-size-real">
-                                                <option value="small">S</option>
-                                                <option value="medium">M</option>
-                                                <option value="large">L</option>
-                                                <option value="extraLarge">XL</option>
-                                                <option value="doubleLarge">XXL</option>
-                                            </select>
-                                        </div>
-                                        <div class="product-color product-var__item">
-                                            <span class="product-var__text">Color</span>
-                                            <div class="color-filter ">
-                                                <label class="product-color"><input name="product-color-select" type="radio" class="product-color-select" value="color-red"><span></span></label>
-                                                <label class="product-color" ><input name="product-color-select" type="radio" class="product-color-select"   value="color-green" checked><span></span></label>
-                                                <label class="product-color" ><input name="product-color-select" type="radio" class="product-color-select"   value="color-blue"><span></span></label>
-                                            </div>
-                                        </div>
+                                    <!-- БЛОК ИЗМЕНИТЬ КОЛИЧЕСТВО ТОВАРА И ДОБАВИТ В КОРЗИНУ -->
                                         <div class="product-quantity product-var__item">
-                                            <span class="product-var__text">Quantity</span>
+                                            <span class="product-var__text">Количество</span>
                                             <div class="product-quantity-box">
                                                 <div class="quantity">
                                                     <input type="number" min="1" max="9" step="1" value="1">
                                                 </div>
-                                                <a href="#modalAddCart" data-toggle="modal" data-dismiss="modal" class="btn btn--box btn--small btn--blue btn--uppercase btn--weight m-l-20">Add to cart</a>
-                                            </div>
-                                           
+                                                <a href="#modalAddCart" data-toggle="modal" data-dismiss="modal" class="btn btn--box btn--small btn--blue btn--uppercase btn--weight m-l-20">В корзину</a>
+                                            </div>    
                                         </div>
                                     </div>
                                     <div class="product-links ">
                                         <div class="product-social m-tb-30">
-                                            <span>Share</span>
+                                            <span>Поделиться</span>
                                             <ul class="product-social-link">
                                                 <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                                                 <li><a href="#"><i class="fab fa-twitter"></i></a></li>
@@ -129,7 +110,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                                 <li><a href="#"><i class="fab fa-pinterest"></i></a></li>
                                             </ul>
                                         </div>
-                                        <a href="wishlist.php" class="link--gray link--icon-left shop__wishlist-icon m-b-5"><i class="icon-heart"></i>Add To Wishlist</a>
+                                        <a href="wishlist.php" class="link--gray link--icon-left shop__wishlist-icon m-b-5"><i class="icon-heart"></i>Добавить в список желаний</a>
                                     </div>
                                 </div>
                             </div>
@@ -500,125 +481,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         </div>
     </main> <!-- ::::::  End  Main Container Section  ::::::  -->
 
-    <!-- ::::::  Start  Footer Section  ::::::  -->
-    <footer class="footer">
-        <div class="footer__top gray-bg p-tb-100 m-t-100">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
-                        <div class="footer__about">
-                            <div class="footer__logo">
-                                <a href="index.php" class="footer__logo-link">
-                                    <img src="assets/img/logo/logo-color.jpg" alt="" class="footer__logo-img">
-                                </a>
-                            </div>
-                            <div class="footer__text">
-                                <p>We are a team of designers & developers that create high quality Magento, Prestashop, Opencart.</p>
-                            </div>
-                            <ul class="footer__address">
-                                <li class="footer__address-item"><span>Address:</span> The Barn, Ullenhall, Henley in Arden B578 5C, England.</li>
-                                <li class="footer__address-item"><span>Call us: </span> <a href="tel:+(012)-800-456-789-987">+(012) 800 456 789 - 987</a> </li>
-                                <li class="footer__address-item"><span>Call us: </span> <a href="mailto:yourname@mail.com">yourname@mail.com</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-sm-6 col-12">
-                        <div class="footer__menu">
-                            <h4 class="footer__nav-title">Products</h4>
-                            <ul class="footer__nav">
-                                <li class="footer__list"><a href="" class="footer__link">Prices drop</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">New products</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Best sales</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Contact us</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Sitemap</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Login</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-sm-6 col-12">
-                        <div class="footer__menu">
-                            <h4 class="footer__nav-title">Our Company</h4>
-                            <ul class="footer__nav">
-                                <li class="footer__list"><a href="" class="footer__link">Delivery</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Legal Notice</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">About us</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Secure payment</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Sitemap</a></li>
-                                <li class="footer__list"><a href="" class="footer__link">Stores</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-12 col-12">
-                        <div class="footer__menu">
-                            <h4 class="footer__nav-title">Follow Us</h4>
-                            <ul class="footer__social-nav">
-                                <li class="footer__social-list"><a href="#" class="footer__social-link"><i class="fab fa-facebook-f"></i></a></li>
-                                <li class="footer__social-list"><a href="#" class="footer__social-link"><i class="fab fa-twitter"></i></a></li>
-                                <li class="footer__social-list"><a href="#" class="footer__social-link"><i class="fab fa-youtube"></i></a></li>
-                                <li class="footer__social-list"><a href="#" class="footer__social-link"><i class="fab fa-google-plus-g"></i></a></li>
-                                <li class="footer__social-list"><a href="#" class="footer__social-link"><i class="fab fa-instagram"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="footer__form">
-                            <h4 class="footer__nav-title">Join Our Newsletter Now</h4>
-                            <form action="#" class="footer__form-box">
-                                <input type="email" placeholder="Your email address">
-                                <button class="btn btn--submit btn--blue btn--uppercase btn--weight " type="submit">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <div class="footer__quick-nav p-t-50">
-                            <a class="footer__quick-link" href="#">Online Shopping</a>
-                            <a class="footer__quick-link" href="#">Promotions</a>
-                            <a class="footer__quick-link" href="#">My Orders</a>
-                            <a class="footer__quick-link" href="#">Help</a>
-                            <a class="footer__quick-link" href="#">Customer Service</a>
-                            <a class="footer__quick-link" href="#">Support</a>
-                            <a class="footer__quick-link" href="#">Most Populars</a>
-                            <a class="footer__quick-link" href="#">New Arrivals</a>
-                            <a class="footer__quick-link" href="#">Special Products</a>
-                            <a class="footer__quick-link" href="#">Manufacturers</a>
-                            <a class="footer__quick-link" href="#">Our Stores</a>
-                            <a class="footer__quick-link" href="#">Shipping</a>
-                            <a class="footer__quick-link" href="#">Payments</a>
-                            <a class="footer__quick-link" href="#">Warantee</a>
-                            <a class="footer__quick-link" href="#">Refunds</a>
-                            <a class="footer__quick-link" href="#">Checkout</a>
-                            <a class="footer__quick-link" href="#">Discount</a>
-                            <a class="footer__quick-link" href="#">Terms & Conditions</a>
-                            <a class="footer__quick-link" href="#">Policy</a>
-                            <a class="footer__quick-link" href="#">Shipping</a>
-                            <a class="footer__quick-link" href="#">Payments</a>
-                            <a class="footer__quick-link" href="#">Returns</a>
-                            <a class="footer__quick-link" href="#">Refunds</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer__bottom">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8 col-12">
-                        <div class="footer__copyright-text">
-                            <p>Copyright <a href="https://hasthemes.com/">HasTheme</a>. All Rights Reserved</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="footer__payment">
-                            <a href="https://hasthemes.com/" class="footer__payment-link">
-                                <img src="assets/img/company-logo/payment.png" alt="" class="footer__payment-img">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer> <!-- ::::::  End  Footer Section  ::::::  -->
+    <?php
+    include $_SERVER['DOCUMENT_ROOT'] . '/parts/footer.php';
+    ?>
 
     <!-- material-scrolltop button -->
     <button class="material-scrolltop" type="button"></button>
