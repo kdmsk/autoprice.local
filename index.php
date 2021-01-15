@@ -370,48 +370,77 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                 </div>
 
                 <div class="col-lg-9 col-xl-9">
-                    <!-- ::::::  Start Hero Section  ::::::  -->
+                    <!-- ::::::  Большой слайдер  ::::::  -->
                     <div class="hero hero-slider hero---2">
                         <div class="swiper-wrapper">
-                            <!-- Start Hero Image -->
-                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(assets/img/hero/hero-home-2-img-1.jpg);">
+                            <!-- Топ придложения слайд 1 -->
+                            <?php
+                            // для управления Топ придложениям №1 изменить переменную $TopApps_1
+                            $TopApps_1 = 8;
+                                 $sql = "SELECT * FROM product WHERE id= " . $TopApps_1; 
+                                 $result = $conn->query($sql);
+                                 $product = mysqli_fetch_assoc($result);                
+                            ?>
+                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(<?php echo $product['photo']; ?>);">
                                 <div class="hero__content">
                                     <div class="row">
                                         <div class="col-9 offset-1">
-                                            <div class="title title--normal title--thin">New Arrivals</div>
-                                            <div class="title title--normal title--regular">Get Amazing PC Now</div>
-                                            <div class="title title--description">Sale Offer <span>-20% Off</span> This Week</div>
-                                            <a href="single-1.php" class="btn btn--box btn--large btn--blue btn--uppercase btn--weight">Shopping Now</a>
+                                            <div class="title title--normal title--thin text-danger">Акцыя</div>
+                                            <div class="title title--normal title--regular text-info"><?php
+                                                echo $product['title'];
+                                              ?></div>
+                                            <div class="title title--description text-danger">Скидка<span class="text-danger"> -20% </span> Только на етой неделе</div>
+                                            <a href="single-1.php?id= <?php echo $product['id']; ?> " class="btn btn--box btn--large btn--blue btn--uppercase btn--weight text-success ">Приобрести</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div> <!-- End Hero Image -->
-                            <!-- Start Hero Image -->
-                            <div class="hero-img hero-img--2  swiper-slide" style="background-image: url(assets/img/hero/hero-home-2-img-2.jpg);">
+                            </div> <!-- Топ придложения слайд 1 -->
+                            <!-- Топ придложения слайд 2 -->
+                            <?php
+                            // для управления Топ придложениям №2 изменить переменную $TopApps_2
+                            $TopApps_2 = 10;
+                                 $sql = "SELECT * FROM product WHERE id= " . $TopApps_2; 
+                                 $result = $conn->query($sql);
+                                 $product = mysqli_fetch_assoc($result);                
+                            ?>
+                            <div class="hero-img hero-img--2  swiper-slide" style="background-image: url(<?php echo $product['photo']; ?>);">
                                 <div class="hero__content">
                                     <div class="row">
                                         <div class="col-9 offset-1">
-                                            <div class="title title--normal title--white title--thin">DJI Zenmuse X7</div>
-                                            <div class="title title--normal title--white title--regular">Drone Expert Services</div>
-                                            <div class="title title--description title--white">Sale Offer <span class="title--white">-20% Off</span> This Week</div>
-                                            <a href="single-1.php" class="btn btn--box btn--border btn--large btn--uppercase btn--weight">Shopping Now</a>
+                                            <div class="title title--normal title--white title--thin text-danger">Акцыя</div>
+                                            <div class="title title--normal title--white title--regular text-info"><?php
+                                                echo $product['title'];
+                                              ?>   
+                                            </div>
+                                            <div class="title title--description title--white text-danger">Скидка <span class="title--white text-danger">-30% </span> При покупке в комплекте с колодками</div>
+                                            <a href="single-1.php?id= <?php echo $product['id']; ?> " class="btn btn--box btn--border btn--large btn--uppercase btn--weight text-success ">Приобрести</a>
                                         </div>
                                     </div>
-                                </div> <!-- End Hero Image -->
+                                </div> <!-- Топ придложения слайд 2 -->
                             </div>
-                            <!-- Start Hero Image -->
-                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(assets/img/hero/hero-home-2-img-3.jpg);">
+                            <!-- Топ придложения слайд 3 -->
+                            <?php
+                            // для управления Топ придложениям №3 изменить переменную $TopApps_3
+                            $TopApps_3 = 18;
+                                 $sql = "SELECT * FROM product WHERE id= " . $TopApps_3; 
+                                 $result = $conn->query($sql);
+                                 $product = mysqli_fetch_assoc($result);                
+                            ?>
+                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(<?php echo $product['photo']; ?>);">
                                 <div class="hero__content">
                                     <div class="row">
                                         <div class="col-9 offset-1">
-                                            <div class="title title--normal title--white title--thin">SAMSUNG</div>
-                                            <div class="title title--normal title--white title--regular">GALAXY S9 / S9+</div>
-                                            <div class="title title--description title--white">Sale Offer <span class="title--white">-20% Off</span> This Week</div>
-                                            <a href="single-1.php" class="btn btn--box btn--large btn--blue btn--uppercase btn--weight">Shopping Now</a>
+                                            <div class="title title--normal title--white title--thin text-danger">Выгодний комплек </div>
+                                            <div class="title title--normal title--white title--regular text-info"><?php
+                                                echo $product['title'];
+                                              ?>
+                                            </div>
+                                            <div class="title title--description title--white text-danger">При покупке комплекта вы економите  <span class="title--white text-danger">40% </span> Идеальное решения для вашего автомобиля </div>
+                                            <a href="single-1.php?id= <?php echo $product['id']; ?>" class="btn btn--box btn--large btn--blue btn--uppercase btn--weight text-success ">Приобрести</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div> <!-- End Hero Image -->
+                            </div> <!-- Топ придложения слайд 3 -->
 
                             <!-- Add Pagination -->
                             <div class="swiper-pagination hero__dots hero__dots--2"></div>
@@ -422,7 +451,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                 <div class="swiper-button-prev hero__nav hero__nav--prev"><i class="far fa-chevron-left"></i></div>
                             </div>
                         </div> <!-- ::::::  End Hero Section  ::::::  -->
-                    </div> <!-- ::::::  ENd Hero Section  ::::::  -->
+                    </div> <!-- ::::::  ENdБольшой слайдер ::::::  -->
 
                     <!-- ::::::  Start  Product Style - Default Section [2column]  ::::::  -->
                     <div class="product product--1 swiper-outside-arrow-hover">
@@ -430,7 +459,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             <div class="col-12">
                                 <div class="section-content section-content--border d-md-flex align-items-center justify-content-between">
                                     <h5 class="section-content__title">ТОВАРИ</h5>
-                                    <a href="single-1.php">Show All Products <i class="icon-chevron-right"></i></a>
+                                    <a href="shop-5-grid.php">Показать все товары <i class="icon-chevron-right"></i></a>
                                 </div>
                             </div>
                         </div>

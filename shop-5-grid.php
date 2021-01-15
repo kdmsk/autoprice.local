@@ -1,4 +1,7 @@
 <?php 
+// подключим базу даных 
+include "configs/db.php";
+//  подключаем шапку сайта 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 ?>
     
@@ -8,8 +11,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                        <li class="page-breadcrumb__nav active">Shop 5 Grid Page</li>
+                        <li class="page-breadcrumb__nav"><a href="index.php">Главная</a></li>
+                        <li class="page-breadcrumb__nav active">Показать все товары</li>
                     </ul>
                 </div>
             </div>
@@ -63,139 +66,82 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             </div>
                         </div>
                     </div> <!-- ::::::  Start Sort Box Section  ::::::  -->
-
                     <div class="product-tab-area">
                         <div class="tab-content ">
                             <div class="tab-pane show active clearfix" id="sort-grid">
                                 <!-- Start Single Default Product -->
-                                <div class="product__box product__box--default product__box--border-hover text-center float-left float-5">
-                                    <div class="product__img-box">
-                                        <a href="single-1.php" class="product__img--link">
-                                            <img class="product__img" src="assets/img/product/size-normal/product-home-1-img-1.jpg" alt="">
-                                        </a>
+                                 <?php 
+                                    $sql = "SELECT * FROM product";
+                                    $result = $conn->query($sql);
+                                    while($product = mysqli_fetch_assoc($result)) {
+                                    ?>    
+                                         <div class="product__box product__box--default product__box--border-hover text-center float-left float-5">
+                                            <div class="product__img-box">
+                                                <a href="single-1.php?id= <?php echo $product['id']; ?>" class="product__img--link">
+                                                    <img class="product__img" src="<?php echo $product['photo']; ?>" alt="">
+                                                </a>
 
-                                        <a href="#modalAddCart" data-toggle="modal" class="btn btn--box btn--small btn--gray btn--uppercase btn--weight btn--hover-zoom product__upper-btn">Add to cart</a>
-                                        <span class="product__tag product__tag--discount">-12%</span>
-                                        <a href="wishlist.php" class="product__wishlist-icon"><i class="icon-heart"></i></a>
-                                    </div>
-                                    <div class="product__price m-t-10">
-                                        <span class="product__price-del">$11.90</span>
-                                        <span class="product__price-reg">$10.71</span>
-                                    </div>
-                                    <a href="single-1.php" class="product__link product__link--underline product__link--weight-light m-t-15">
-                                        SonicFuel Wireless Over-Ear Headphones
-                                    </a>
-                                </div> <!-- End Single Default Product -->
+                                                <a href="?id= <?php echo $product['id']; ?>" data-toggle="modal" data-target="#modalAddCart" class=" btn btn--box btn--small btn--gray btn--uppercase btn--weight btn--hover-zoom product__upper-btn">детально</a>
+
+                                                <a href="wishlist.php?id= <?php echo $product['id']; ?>" class="product__wishlist-icon"><i class="icon-heart"></i></a>
+                                            </div>
+                                            <div class="product__price m-t-10">
+                                                <span class="product__price-reg"><?php echo $product['prise']; ?>грн.</span>
+                                            </div>
+                                            <a href="single-1.php?id= <?php echo $product['id']; ?>" class="product__link product__link--underline product__link--weight-light m-t-15">
+                                               <?php echo $product['title']; ?>
+                                            </a>
+                                        </div> 
+                                    <?php
+                                    }  // конец цыкла
+                                ?>
+                               <!-- End Single Default Product -->
                             </div>
                             <div class="tab-pane shop-list" id="sort-list">
                                 <!-- Start Single List Product -->
-                                <div class="product__box product__box--list">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="product__img-box">
-                                                <a href="single-1.php" class="product__img--link">
-                                                    <img class="product__img" src="assets/img/product/size-normal/product-home-1-img-4.jpg" alt="">
+                                <?php
+                                $sql = "SELECT * FROM product";
+                                $result = $conn->query($sql);
+                                while($product = mysqli_fetch_assoc($result)) {
+                                ?>    
+                                     <div class="product__box product__box--list">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="product__img-box">
+                                                    <a href="single-1.php?id= <?php echo $product['id']; ?>" class="product__img--link">
+                                                        <img class="product__img" src="<?php echo $product['photo']; ?>" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 pos-relative">
+                                                <div class="border-right pos-absolute"></div>
+                                                <div class="product__price">
+                                                    
+                                                    <span class="product__price-reg"><?php echo $product['prise']; ?>грн.</span>
+                                                </div>
+                                                <a href="single-1.php?id= <?php echo $product['id']; ?>" class="product__link product__link--underline product__link--weight-light m-t-15">
+                                                    <?php echo $product['title']; ?>
                                                 </a>
-                                                <span class="product__tag product__tag--discount">-12%</span>
-                                                
+                                                <div class="product__desc m-t-25 m-b-30">
+                                                    <p><?php echo $product['descriptions']; ?></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-5 pos-relative">
-                                            <div class="border-right pos-absolute"></div>
-                                            <div class="product__price">
-                                                <span class="product__price-del">$11.90</span>
-                                                <span class="product__price-reg">$10.71</span>
+                                            <div class="col-md-3">
+                                                <div>
+                                                    <ul class="shop__list-link">
+                                                        <li><a href="#modalAddCart" data-toggle="modal" class="btn btn--block btn--small btn--border-blue btn--uppercase btn--weight m-b-15">детально</a></li>
+                                                        <li><a href="wishlist.php?id= <?php echo $product['id']; ?>" class="link--gray link--icon-left shop__wishlist-icon m-b-5"><i class="icon-heart"></i>Избраные</a></li>
+                                                        <li><a href="#modalQuickView" data-toggle="modal"  class="link--gray link--icon-left shop__quickview-icon"><i class="icon-eye"></i>Быстрый просмотр</a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <a href="single-1.php" class="product__link product__link--underline product__link--weight-light m-t-15">
-                                                SonicFuel Wireless Over-Ear Headphones
-                                            </a>
-                                            <div class="product__desc m-t-25 m-b-30">
-                                                <p>The ATH-S700BT offers clear, full-bodied audio reproduction with Bluetooth® wireless operation. The headphones are equipped with a mic, and music and volume controls, allowing you to ...</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div>
-                                                <ul class="shop__list-link">
-                                                    <li><a href="#modalAddCart" data-toggle="modal" class="btn btn--block btn--small btn--border-blue btn--uppercase btn--weight m-b-15">Add to cart</a></li>
-                                                    <li><a href="wishlist.php" class="link--gray link--icon-left shop__wishlist-icon m-b-5"><i class="icon-heart"></i>Add To Wishlist</a></li>
-                                                    <li><a href="#modalQuickView" data-toggle="modal"  class="link--gray link--icon-left shop__quickview-icon"><i class="icon-eye"></i>Quick View</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> <!-- Start Single List Product -->
-                                <!-- Start Single List Product -->
-                                <div class="product__box product__box--list">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="product__img-box">
-                                                <a href="single-1.php" class="product__img--link">
-                                                    <img class="product__img" src="assets/img/product/size-normal/product-home-1-img-5.jpg" alt="">
-                                                </a>
-                                                <span class="product__tag product__tag--discount">-12%</span>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5 pos-relative">
-                                            <div class="border-right pos-absolute"></div>
-                                            <div class="product__price">
-                                                <span class="product__price-del">$11.90</span>
-                                                <span class="product__price-reg">$10.71</span>
-                                            </div>
-                                            <a href="single-1.php" class="product__link product__link--underline product__link--weight-light m-t-15">
-                                                SonicFuel Wireless Over-Ear Headphones
-                                            </a>
-                                            <div class="product__desc m-t-25 m-b-30">
-                                                <p>The ATH-S700BT offers clear, full-bodied audio reproduction with Bluetooth® wireless operation. The headphones are equipped with a mic, and music and volume controls, allowing you to ...</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div>
-                                                <ul class="shop__list-link">
-                                                    <li><a href="#modalAddCart" data-toggle="modal" class="btn btn--block btn--small btn--border-blue btn--uppercase btn--weight m-b-15">Add to cart</a></li>
-                                                    <li><a href="wishlist.php" class="link--gray link--icon-left shop__wishlist-icon m-b-5"><i class="icon-heart"></i>Add To Wishlist</a></li>
-                                                    <li><a href="#modalQuickView" data-toggle="modal"  class="link--gray link--icon-left shop__quickview-icon"><i class="icon-eye"></i>Quick View</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> <!-- Start Single List Product -->
-                                <!-- Start Single List Product -->
-                                <div class="product__box product__box--list">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="product__img-box">
-                                                <a href="single-1.php" class="product__img--link">
-                                                    <img class="product__img" src="assets/img/product/size-normal/product-home-1-img-6.jpg" alt="">
-                                                </a>
-                                                <span class="product__tag product__tag--discount">-12%</span>
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5 pos-relative">
-                                            <div class="border-right pos-absolute"></div>
-                                            <div class="product__price">
-                                                <span class="product__price-del">$11.90</span>
-                                                <span class="product__price-reg">$10.71</span>
-                                            </div>
-                                            <a href="single-1.php" class="product__link product__link--underline product__link--weight-light m-t-15">
-                                                SonicFuel Wireless Over-Ear Headphones
-                                            </a>
-                                            <div class="product__desc m-t-25 m-b-30">
-                                                <p>The ATH-S700BT offers clear, full-bodied audio reproduction with Bluetooth® wireless operation. The headphones are equipped with a mic, and music and volume controls, allowing you to ...</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div>
-                                                <ul class="shop__list-link">
-                                                    <li><a href="#modalAddCart" data-toggle="modal" class="btn btn--block btn--small btn--border-blue btn--uppercase btn--weight m-b-15">Add to cart</a></li>
-                                                    <li><a href="wishlist.php" class="link--gray link--icon-left shop__wishlist-icon m-b-5"><i class="icon-heart"></i>Add To Wishlist</a></li>
-                                                    <li><a href="#modalQuickView" data-toggle="modal"  class="link--gray link--icon-left shop__quickview-icon"><i class="icon-eye"></i>Quick View</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> <!-- Start Single List Product -->
+                                        </div> 
+                                    </div> <!-- Start Single List Product -->
+                                <?php
+                                };
+                                ?>
+                               
+                                
                                 
                             </div>
                         </div>
@@ -229,8 +175,23 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
     <!-- Start Modal Add cart -->
     <div class="modal fade" id="modalAddCart" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content">
+             
+           
+          <div class="modal-content">
             <div class="modal-header">
+                <?php 
+            if (isset($_GET['id'])) {
+                echo "YS";
+                // $sql = "SELECT * FROM product WHERE id=" . $_GET['id'];
+                // $result = $conn->query($sql);
+                // $product = mysqli_fetch_assoc($result);
+                // var_dump($product['title']);
+               
+                } else {
+                    echo "NO";
+                }
+                ?>
+
             <h5 class="modal-title text-center">Product Successfully Added To Your Shopping Cart</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -275,6 +236,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                 </div>
             </div>
         </div>
+  
         </div>
     </div> <!-- End Modal Add cart -->
 

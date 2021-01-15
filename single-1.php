@@ -5,7 +5,6 @@ include "configs/db.php";
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 
 // если поступил GET  с id товара  проводим запрос в базу для получения даного товара
-$_GET['id'] = 19;
 if (isset($_GET['id'])) {
     $sql = "SELECT * FROM product WHERE id = " . $_GET['id'];
     $result = $conn->query($sql);
@@ -22,8 +21,8 @@ if (isset($_GET['id'])) {
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                        <li class="page-breadcrumb__nav active">Single Product Page</li>
+                        <li class="page-breadcrumb__nav"><a href="index.php">Главная</a></li>
+                        <li class="page-breadcrumb__nav active"><?php echo $product['brand']; ?></li>
                     </ul>
                 </div>
             </div>
