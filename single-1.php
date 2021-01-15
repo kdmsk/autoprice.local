@@ -5,7 +5,6 @@ include "configs/db.php";
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 
 // если поступил GET  с id товара  проводим запрос в базу для получения даного товара
-$_GET['id'] = 19;
 if (isset($_GET['id'])) {
     $sql = "SELECT * FROM product WHERE id = " . $_GET['id'];
     $result = $conn->query($sql);
