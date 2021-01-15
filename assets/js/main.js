@@ -1,3 +1,81 @@
+//создаем функцию для добавления в корзину
+function addToCart (btn){
+	//создаем обьект
+	var ajax = new XMLHttpRequest();
+	//создаем запрос
+	ajax.open("POST", siteURL +"/modules/basket/add-to-cart.php", false);
+	ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	//отправляем запрос
+	ajax.send("id=" + btn.dataset.id);
+	//преобразовыем данные полученные ajax.response в JSON формат
+	var response = JSON.parse(ajax.response);
+	//выбираем по селектору корзину
+	var btnGoBasket = document.querySelector("#go-basket span");
+	//присваиваем значение количества товара в корзине
+	btnGoBasket.innerText = response.count;
+
+}
+
+/*===========================================
+	Функция для удаления товара из корзины
+=============================================*/
+
+function deleteProductBasket(obj,id){
+	//создаем обьект
+	var ajax = new XMLHttpRequest();
+	//создаем запрос
+	ajax.open("POST", siteURL +"/modules/basket/basket_del.php", false);
+	ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	//отправляем запрос
+	//преобразовыем данные полученные ajax.response в JSON формат
+
+	ajax.send("id=" + id);
+	//вывести на экран
+	alert("Product deleted");
+	obj.parentNode.parentNode.remove();
+	var response = JSON.parse(ajax.response);
+	var btnGoBasket = document.querySelector("#go-basket span");
+	//присваиваем значение количества товара в корзине
+	btnGoBasket.innerText = response.count;
+
+}
+
+/*===========================================
+	Функция для изменения количества товара в корзине
+=============================================*/
+
+// создаем переменную и помещаем в нее элемент users-block
+var inputCount = document.querySelector("#input-count");
+// привязываем функцию к событию
+if(inputCount){
+	function  editCountProductToBasket(obj,id,cost){
+		event.preventDefault();
+
+		// помещаем в переменную элемент
+		var inputCountText = document.getElementById("input-count#"+id);
+		var costProd = document.getElementById("cost-prod#"+id);
+
+		// помещаем в переменную значения
+		var inputValue = "count=" + inputCountText.value +
+			"&id=" + id;
+
+		//создаем переменную для AJAX запроса
+		var ajax = new XMLHttpRequest();
+		// открываем AJAX запрос
+		ajax.open( "POST", inputCount.action, false );
+		// код необходимый для POST запроса
+		ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		// посылаем AJAX запрос
+		ajax.send(inputValue);
+		costProd.innerText =  cost*inputCountText.value+"грн";
+
+		var summAllshop = document.querySelector("#summall");
+
+	}
+
+}
+
+
 (function ($) {
     "use strict";
     /*--
