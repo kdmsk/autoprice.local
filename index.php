@@ -370,7 +370,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                 </div>
 
                 <div class="col-lg-9 col-xl-9">
-                    <!-- ::::::  Start Hero Section  ::::::  -->
+                    <!-- ::::::  Большой слайдер  ::::::  -->
                     <div class="hero hero-slider hero---2">
                         <div class="swiper-wrapper">
                             <!-- Топ придложения слайд 1 -->
@@ -451,7 +451,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                 <div class="swiper-button-prev hero__nav hero__nav--prev"><i class="far fa-chevron-left"></i></div>
                             </div>
                         </div> <!-- ::::::  End Hero Section  ::::::  -->
-                    </div> <!-- ::::::  ENd Hero Section  ::::::  -->
+                    </div> <!-- ::::::  ENdБольшой слайдер ::::::  -->
 
                     <!-- ::::::  Start  Product Style - Default Section [2column]  ::::::  -->
                     <div class="product product--1 swiper-outside-arrow-hover">
@@ -459,7 +459,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             <div class="col-12">
                                 <div class="section-content section-content--border d-md-flex align-items-center justify-content-between">
                                     <h5 class="section-content__title">ТОВАРИ</h5>
-                                    <a href="single-1.php">Show All Products <i class="icon-chevron-right"></i></a>
+                                    <a href="shop-5-grid.php">Показать все товары <i class="icon-chevron-right"></i></a>
                                 </div>
                             </div>
                         </div>
