@@ -1,5 +1,7 @@
 <?php 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/settings.php';
 ?>
     
    <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
@@ -8,13 +10,33 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                        <li class="page-breadcrumb__nav active">Login Page</li>
+                        <li class="page-breadcrumb__nav"><a href="#">Главная</a></li>
+                        <li class="page-breadcrumb__nav active">Страница регистрации</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
+
+<?php
+// проверка ввода полей
+    if(isset($_POST["username"]) && isset($_POST["password"]) && $_POST["username"] != "" && $_POST["password"] != "") {
+        // формируем запрос поиска в БД по имейлу и паролю
+        $sql1 = "SELECT * FROM user WHERE name LIKE '" . $_POST["username"] . "' AND password LIKE '" . $_POST["password"] . "'";
+        // выполняем запрос
+        $result = mysqli_query($conn, $sql1);
+        // получаем количество совпадений по юзерам в БД
+        $users_number = mysqli_num_rows($result);
+        // если количество найденных юзеров равно 1, то авторизуем
+        if($users_number == 1) {
+            $user = mysqli_fetch_assoc($result); // создаем ассоциацию с юзером
+            setcookie("user_id", time() + 3600*24); // куки для хранения на сутки ID залогиненного юзера
+            header("Location: /");
+        } else {
+            echo "<h2>Ошибка</h2>";
+        }
+    }
+?>
 
     <!-- ::::::  Start  Main Container Section  ::::::  -->
     <main id="main-container" class="main-container">
@@ -29,49 +51,65 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                 <div class="login-register-wrapper">
                                     <div class="login-register-tab-list nav">
                                         <a class="active" data-toggle="tab" href="#lg1">
-                                            <h4>login</h4>
+                                            <h4>АВТОРИЗАЦИЯ</h4>
                                         </a>
                                         <a data-toggle="tab" href="#lg2">
-                                            <h4>register</h4>
+                                            <h4>РЕГИСТРАЦИЯ</h4>
                                         </a>
                                     </div>
                                     <div class="tab-content">
                                         <div id="lg1" class="tab-pane active">
                                             <div class="login-form-container">
                                                 <div class="login-register-form">
-                                                    <form action="#" method="post">
+                                                    <form action="login.php" method="POST">
                                                         <div class="form-box__single-group">
-                                                            <input type="text" id="form-username" placeholder="Username">
+                                                            <input type="text" name="username" placeholder="Имя пользователя">
                                                         </div>
                                                         <div class="form-box__single-group">
-                                                            <input type="password" id="form-username-password" placeholder="Enter password">
+                                                            <input type="password" name="password" placeholder="Ввести пароль">
                                                         </div>
                                                         <div class="d-flex justify-content-between flex-wrap m-tb-20">
                                                             <label for="account-remember">
-                                                                <input type="checkbox" name="account-remember" id="account-remember">
-                                                                <span>Remember me</span>
+                                                                <input type="checkbox" name="remember" id="account-remember">
+                                                                <span>ЗАПОМНИТЬ</span>
                                                             </label>
-                                                            <a class="link--gray" href="">Forgot Password?</a>
+                                                            <a class="link--gray" href="">ЗАБЫЛИ ПАРОЛЬ?</a>
                                                         </div>
-                                                        <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">LOGIN</button>
+                                                        <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">ВОЙТИ</button>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
+
+<?php 
+    if(
+    isset($_POST["email"]) && isset($_POST["password"])
+    && $_POST["email"] != "" && $_POST["password"] != ""
+) {
+       
+    $sql = "INSERT INTO user (name, email, password) VALUES ('" . $_POST["username"] . "','" . $_POST["email"] . "', '" . $_POST["password"] . "')";
+    if(mysqli_query($conn, $sql)) {
+        echo " Удачная регистрация ";
+    } {
+            echo "<h2>Ошибка</h2>";
+        }
+}
+?>
+
                                         <div id="lg2" class="tab-pane">
                                             <div class="login-form-container">
                                                 <div class="login-register-form">
-                                                    <form action="#" method="post">
+                                                    <form action="login.php" method="POST">
                                                         <div class="form-box__single-group">
-                                                            <input type="text" id="form-register-username" placeholder="Username">
+                                                            <input type="text" name="username" placeholder="Имя пользователя">
                                                         </div>
                                                         <div class="form-box__single-group">
-                                                            <input type="email" id="form-uregister-sername-email" placeholder="Enter email">
+                                                            <input type="email" name="email" placeholder="Ввести почту">
                                                         </div>
                                                         <div class="form-box__single-group m-b-20">
-                                                            <input type="password" id="form-register-username-password" placeholder="Enter password">
+                                                            <input type="password" name="password" placeholder="Ввести пароль">
                                                         </div>
-                                                        <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">REGISTER</button>
+                                                        <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">СОЗДАТЬ</button>
                                                     </form>
                                                 </div>
                                             </div>
