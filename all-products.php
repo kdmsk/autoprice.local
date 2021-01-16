@@ -13,7 +13,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="index.php">Главная</a></li>
+                        <li class="page-breadcrumb__nav"><a href="/">Главная</a></li>
                         <li class="page-breadcrumb__nav active">Показать все товары</li>
                     </ul>
                 </div>
