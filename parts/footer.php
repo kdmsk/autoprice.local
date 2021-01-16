@@ -7,7 +7,7 @@
                         <div class="footer__about">
                             <div class="footer__logo">
                                 <a href="index.php" class="footer__logo-link">
-                                    <img src="assets/img/logo/logo-color.jpg" alt="" class="footer__logo-img">
+                                    <img src="assets/img/logo/logo1.jpg" alt="" class="footer__logo-img">
                                 </a>
                             </div>
                             <div class="footer__text">
@@ -117,3 +117,4 @@
             </div>
         </div>
     </footer> <!-- ::::::  End  Footer Section  ::::::  -->
+    <script src="assets/js/main.js"></script>

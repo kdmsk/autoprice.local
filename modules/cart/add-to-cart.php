@@ -5,7 +5,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 //делаем проверку пришли ли данные чз POST методом
 if(isset($_POST) and $_SERVER["REQUEST_METHOD"] =="POST"){
 	//создаем запрос в БД
-	$sql =" SELECT * FROM products WHERE id = " .$_POST['id'] ;
+	$sql =" SELECT * FROM product WHERE id = " .$_POST['id'] ;
 	//выполняем запрос
 	$result = $conn->query($sql);
 	//переводим полученные данные в переменную

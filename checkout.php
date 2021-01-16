@@ -1,25 +1,8 @@
-<?php 
-include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+<?php
 include $_SERVER['DOCUMENT_ROOT'] . "/configs/db.php";
 include $_SERVER['DOCUMENT_ROOT'] . "/configs/configs.php";
 include $_SERVER['DOCUMENT_ROOT'] . "/modules/telegram/send-message.php";
-?>
 
-   <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
-    <div class="page-breadcrumb">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                        <li class="page-breadcrumb__nav active">Checkout Page</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
-
-    <?php
     if(isset($_POST) and $_SERVER["REQUEST_METHOD"]=="POST") {
 
         $sql_user = "SELECT * FROM user WHERE name LIKE '" . $_POST["fname"] . "' AND email LIKE '" . $_POST["email"] . "'";
@@ -42,11 +25,12 @@ include $_SERVER['DOCUMENT_ROOT'] . "/modules/telegram/send-message.php";
 
         $sql_order = "INSERT INTO `orders` (`user_id`, `first_name`, `last_name`, `shipping_method`, `delivery_service`, `address`, `region_state`, `zip_postal_code`, `phone`, `email`, `product_name`)
          VALUES ('" . $user_id . "', '" . $_POST["fname"] . "', '" . $_POST["lname"] . "', '" . $_POST["smethod"] . "', '" . $_POST["dservice"] . "', '"
-          . $_POST["adress"] . "', '" . $_POST["state"] . "', '" . $_POST["pcode"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . 1 . "');";
+          . $_POST["adress"] . "', '" . $_POST["state"] . "', '" . $_POST["pcode"] . "', '" . $_POST["phone"] . "', '" . $_POST["email"] . "', '" . $_COOKIE["basket"] . "');";
         if($conn->query($sql_order)) {
-            header("Location: /");
+            //header("Location: /");
             // Очищаем куки
-            //setcookie("basket", "", 0, "/");
+            setcookie("basket", "", 0, "/");
+            setcookie("countBasket", "", 0, "/");
             // Выводим на экран "Заказ оформлен"
             echo "<h2>Заказ оформлен</h2> <br/>
             <a href='/'> На главную </a>";
@@ -55,7 +39,26 @@ include $_SERVER['DOCUMENT_ROOT'] . "/modules/telegram/send-message.php";
             
         }
     }
-    ?>
+   
+include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+
+?>
+
+   <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
+    <div class="page-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="page-breadcrumb__menu">
+                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
+                        <li class="page-breadcrumb__nav active">Checkout Page</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
+
+    
 
     <!-- ::::::  Start  Main Container Section  ::::::  -->
     <main id="main-container" class="main-container">

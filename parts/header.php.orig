@@ -177,18 +177,22 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                                     </ul>
                                     <!--Single Dropdown Menu-->
                                 </li> <!-- End Single Nav link-->
+<<<<<<< HEAD
+=======
+
+                                <!--Start Single Nav link-->
+                                <li class="header__nav-item pos-relative">
                                     <a href="all-products.php" class="header__nav-link">Все категории <i class="icon-chevron-down"></i></a>
                                     <!-- Megamenu Menu-->
                                     <ul class="mega-menu pos-absolute">
                                         <li class="mega-menu__box">
                                             <!--Single Megamenu Item Menu-->
                                             <div class="mega-menu__item-box">
-                                    <!-- Megamenu Menu-->
-                                    <ul class="mega-menu pos-absolute">
-                                        <li class="mega-menu__box">
-                                            <!--Single Megamenu Item Menu-->
-                                            <div class="mega-menu__item-box">
                                                 <span class="mega-menu__title">Категории товаров</span>
+                                                <ul class="mega-menu__item">
+                                                <?php 
+                                                    // выводим  все категори товаров 
+                                                        $sql = "SELECT * FROM cat";
                                                         $result = $conn->query($sql);   
                                                         while ($row = mysqli_fetch_assoc($result)) {
                                                         ?>
@@ -198,7 +202,26 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                                                         <?php
                                                         }
                                                     ?>
+                                                </ul>
+                                            </div>
+                                            <!--Single Megamenu Item Menu-->
+
+                                            <!--Single Megamenu Item Menu-->
                                             
+                                        </li>
+                                        <!--Megamenu Item Banner-->
+                                        <li class="mega-menu__banner">
+                                            <a href="shop-1.php" class="mega-menu__banner-link">
+                                                <img src="assets/img/banner/menu-banner.jpg" alt="" class="mega-menu__banner-img">
+                                            </a>
+                                        </li>
+                                        <!--Megamenu Item Banner-->
+                                    </ul>
+                                    <!-- Megamenu Menu-->
+                                </li> <!-- Start Single Nav link-->
+
+                                <!--Start Single Nav link-->
+>>>>>>> ef2412f522f2c3c748d8424cbdf6ebf2671ec4bc
                                 <li class="header__nav-item pos-relative">
                                     <a href="my-account.php" class="header__nav-link">Личный кабинет</a>
                                 </li>
@@ -206,11 +229,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                                 <li class="header__nav-item pos-relative">
                                      <a href="contact.php" class="header__nav-link">Контакты</a>
                                 </li> <!-- End Single Nav link-->
-
-                                <!--Start Single Nav link-->
-                                <li class="header__nav-item pos-relative">
-                                     <a href="contact.php" class="header__nav-link">Contact Us</a>
-                                </li> <!-- End Single Nav link-->
+                                 <li class="header__nav-item pos-relative">
+                                    <a href="about.php" class="header__nav-link">Наша команда</a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
