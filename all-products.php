@@ -120,9 +120,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                 if(isset($_COOKIE["basket"])) {
                     // Помещаем в переменную $basket декодированую строку JSON
                     $basket = json_decode($_COOKIE["basket"], true);
-                    
-                    // Переменная i = 0; пока переменная i меньше кол-ва товаров в корзине; увеличиваем значение $i++
-                    for($i = 0; $i < count($basket["basket"]); $i++) {
+                        $shipping = 7;
                         // Выбираем все поля из таблицы products где id = значению $basket["basket"]["$i"]
                         $sql = "SELECT * FROM product WHERE id=" . $basket["basket"][$i]["product_id"];
                         // Выполняем sql запрос
@@ -156,7 +154,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                             <ul class="modal__product-shipping-info m-tb-15">
                                 <li class="<?php echo "price" . $product['id']; ?>">Total products:<span>$<?php echo $basket["basket"][$i]["count"] * $product['prise']; ?></span></li>
                                 <li>Total shipping:<span>$7.00</span></li>
-                                <li class="<?php echo "price" . $product['id']; ?>">Total: <span>$<?php echo $basket["basket"][$i]["count"] * $product['prise'] . 7; ?></span></li>
+                                <li class="<?php echo "price" . $product['id']; ?>">Total: <span>$<?php echo $basket["basket"][$i]["count"] * $product['prise'] + $shipping; ?></span></li>
                             </ul>
                             
                             <div class="modal__product-cart-buttons">
@@ -171,7 +169,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                         
             <?php
                             
-                    }
+                    
                 } 
                         
             ?>
