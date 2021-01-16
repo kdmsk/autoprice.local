@@ -14,7 +14,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                 <div class="col-lg-3 col-xl-3">
                     <!-- menu content -->
                     <div class="header-menu-vertical d-lg-block d-none">
-                        <h4 class="menu-title link--icon-left"><i class="far fa-align-left"></i> Все категори</h4>
+                        <h4 class="menu-title link--icon-left"><i class="far fa-align-left"></i> Все категории</h4>
                         <ul class="menu-content">
                              <?php 
                              // выводим  все категори товаров 

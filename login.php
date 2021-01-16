@@ -1,9 +1,38 @@
-<?php 
-include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+
+<?php
 include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/configs/settings.php';
+// проверка ввода полей
+    if(isset($_POST["username"]) && isset($_POST["password"]) && $_POST["username"] != "" && $_POST["password"] != "") {
+        // формируем запрос поиска в БД по имейлу и паролю
+        $sql1 = "SELECT * FROM user WHERE name LIKE '" . $_POST["username"] . "' AND password LIKE '" . $_POST["password"] . "'";
+        // выполняем запрос
+        $result = mysqli_query($conn, $sql1);
+        // получаем количество совпадений по юзерам в БД
+        $users_number = mysqli_num_rows($result);
+        // если количество найденных юзеров равно 1, то авторизуем
+        if($users_number == 1) {
+            $user = mysqli_fetch_assoc($result); // создаем ассоциацию с юзером
+            setcookie("user_id", time() + 3600*24); // куки для хранения на сутки ID залогиненного юзера
+             header("Location: /");
+        } 
+
+
+        // else {
+        //    echo "<h2>Ошибка</h2>";
+       // }
+    }
+?>
+
+
+<?php 
+include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+
+
 ?>
     
+
+
    <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
     <div class="page-breadcrumb">
         <div class="container">
@@ -18,25 +47,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/settings.php';
         </div>
     </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
 
-<?php
-// проверка ввода полей
-    if(isset($_POST["username"]) && isset($_POST["password"]) && $_POST["username"] != "" && $_POST["password"] != "") {
-        // формируем запрос поиска в БД по имейлу и паролю
-        $sql1 = "SELECT * FROM user WHERE name LIKE '" . $_POST["username"] . "' AND password LIKE '" . $_POST["password"] . "'";
-        // выполняем запрос
-        $result = mysqli_query($conn, $sql1);
-        // получаем количество совпадений по юзерам в БД
-        $users_number = mysqli_num_rows($result);
-        // если количество найденных юзеров равно 1, то авторизуем
-        if($users_number == 1) {
-            $user = mysqli_fetch_assoc($result); // создаем ассоциацию с юзером
-            setcookie("user_id", time() + 3600*24); // куки для хранения на сутки ID залогиненного юзера
-            header("Location: /");
-        } else {
-            echo "<h2>Ошибка</h2>";
-        }
-    }
-?>
 
     <!-- ::::::  Start  Main Container Section  ::::::  -->
     <main id="main-container" class="main-container">
@@ -90,9 +100,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/settings.php';
     $sql = "INSERT INTO user (name, email, password) VALUES ('" . $_POST["username"] . "','" . $_POST["email"] . "', '" . $_POST["password"] . "')";
     if(mysqli_query($conn, $sql)) {
         echo " Удачная регистрация ";
-    } {
-            echo "<h2>Ошибка</h2>";
-        }
+    } 
 }
 ?>
 
