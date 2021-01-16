@@ -2,7 +2,7 @@
 <?php 
 
 // подключим базу даных 
-include "configs/db.php";
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 //  подключаем шапку сайта 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 ?>
@@ -23,7 +23,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                 while ($row = mysqli_fetch_assoc($result)) {
                                 ?>
                                 <li class="menu-item">
-                                   <a href="product.php?id= <?php echo $row['id']; ?>"><?php echo $row['title'];?></a>
+                                   <a href="cat.php?id= <?php echo $row['id']; ?>"><?php echo $row['title'];?></a>
                                 </li>
                                    <?php
                                 }
@@ -754,9 +754,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         </div>
     </main> <!-- ::::::  End  Main Container Section  ::::::  -->
 
-    <?php
-    include $_SERVER['DOCUMENT_ROOT'] . '/parts/footer.php';
-    ?>
+    
 
     <!-- material-scrolltop button -->
     <button class="material-scrolltop" type="button"></button>
@@ -812,6 +810,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         </div>
         </div>
     </div> <!-- End Modal Add cart -->
+    <?php
+    include $_SERVER['DOCUMENT_ROOT'] . '/parts/footer.php';
+    ?>
 
 
     <!-- ::::::::::::::All Javascripts Files here ::::::::::::::-->

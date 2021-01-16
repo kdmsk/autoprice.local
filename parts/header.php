@@ -1,3 +1,10 @@
+<?php 
+
+// подключим базу даных 
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -89,7 +96,7 @@
                         <div class="col-lg-3">
                             <div class="header__logo">
                                 <a href="index.php" class="header__logo-link">
-                                    <img src="assets/img/logo/logo-color.jpg" alt="" class="header__logo-img">
+                                    <img src="assets/img/logo/logo1.jpg" alt="" class="header__logo-img">
                                 </a>
                             </div>
                         </div>
@@ -130,7 +137,7 @@
 
                                         <!-- Start Header Add Cart Box -->
                                         <div class="header-add-cart pos-relative m-l-40">
-                                            <a href="#offcanvas-add-cart__box" class="offcanvas-toggle">
+                                            <a id="go-basket" href="cart.php" class="">
                                                 <i class="icon-shopping-cart"></i>
                                                 <span class="wishlist-item-count pos-absolute"><?php echo $countBasket?></span>
                                             </a>
@@ -172,65 +179,38 @@
                                         <li class="dropdown__list"><a href="wishlist.php" class="dropdown__link">Wishlist</a></li>
                                         <li class="dropdown__list"><a href="my-account.php" class="dropdown__link">My Account</a></li>
                                         <li class="dropdown__list"><a href="login.php" class="dropdown__link">Login</a></li>
-                                        <li class="dropdown__list"><a href="404-page.php" class="dropdown__link">404 Page</a></li>
                                     </ul>
                                     <!--Single Dropdown Menu-->
                                 </li> <!-- End Single Nav link-->
 
                                 <!--Start Single Nav link-->
                                 <li class="header__nav-item pos-relative">
-                                    <a href="#" class="header__nav-link">Shop <i class="icon-chevron-down"></i></a>
+                                    <a href="all-products.php" class="header__nav-link">Все категории <i class="icon-chevron-down"></i></a>
                                     <!-- Megamenu Menu-->
                                     <ul class="mega-menu pos-absolute">
                                         <li class="mega-menu__box">
                                             <!--Single Megamenu Item Menu-->
                                             <div class="mega-menu__item-box">
-                                                <span class="mega-menu__title">Shop Page Grid</span>
+                                                <span class="mega-menu__title">Категории товаров</span>
                                                 <ul class="mega-menu__item">
-                                                    <li class="mega-menu__list"><a href="shop-1.php" class="mega-menu__link">Shop Default</a></li>
-                                                    <li class="mega-menu__list"><a href="shop-4-grid.php" class="mega-menu__link">Shop 4grid</a></li>
-                                                    <li class="mega-menu__list"><a href="shop-5-grid.php" class="mega-menu__link">Shop 5grid</a></li>
-                                                    <li class="mega-menu__list"><a href="shop-grid-left-sidebar.php" class="mega-menu__link">Shop Left Sidebar</a></li>
-                                                    <li class="mega-menu__list"><a href="shop-grid-right-sidebar.php" class="mega-menu__link">Shop Right Sidebar</a></li>
+                                                <?php 
+                                                    // выводим  все категори товаров 
+                                                        $sql = "SELECT * FROM cat";
+                                                        $result = $conn->query($sql);   
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                        <li class="menu-item">
+                                                            <a href="cat.php?id=<?php echo $row['id']; ?>"><?php echo $row['title'];?></a>
+                                                        </li>
+                                                        <?php
+                                                        }
+                                                    ?>
                                                 </ul>
                                             </div>
                                             <!--Single Megamenu Item Menu-->
 
                                             <!--Single Megamenu Item Menu-->
-                                            <div class="mega-menu__item-box">
-                                                <span class="mega-menu__title">Shop Page List</span>
-                                                <ul class="mega-menu__item">
-                                                    <li class="mega-menu__list"><a href="shop-list.php" class="mega-menu__link">Shop List</a></li>
-                                                    <li class="mega-menu__list"><a href="shop-list-left-sidebar.php" class="mega-menu__link">Shop Left Sidebar</a></li>
-                                                    <li class="mega-menu__list"><a href="shop-list-right-sidebar.php" class="mega-menu__link">Shop Right Sidebar</a></li>
-                                                </ul>
-                                            </div>
-                                            <!--Single Megamenu Item Menu-->
-
-                                            <!--Single Megamenu Item Menu-->
-                                            <div class="mega-menu__item-box">
-                                                <span class="mega-menu__title">Product Single</span>
-                                                <ul class="mega-menu__item">
-                                                    <li class="mega-menu__list"><a href="single-1.php" class="mega-menu__link">Single</a></li>
-                                                    <li class="mega-menu__list"><a href="single-variable.php" class="mega-menu__link">Variable</a></li>
-                                                    <li class="mega-menu__list"><a href="single-left-tab.php" class="mega-menu__link">Left Tab</a></li>
-                                                    <li class="mega-menu__list"><a href="single-right-tab.php" class="mega-menu__link">Right Tab</a></li>
-                                                </ul>
-                                            </div>
-                                            <!--Single Megamenu Item Menu-->
-
-                                            <!--Single Megamenu Item Menu-->
-                                            <div class="mega-menu__item-box">
-                                                <span class="mega-menu__title">Product Single</span>
-                                                <ul class="mega-menu__item">
-                                                    <li class="mega-menu__list"><a href="single-slider.php" class="mega-menu__link">Single Slider</a></li>
-                                                    <li class="mega-menu__list"><a href="single-gallery-left.php" class="mega-menu__link">Gallery Left</a></li>
-                                                    <li class="mega-menu__list"><a href="single-gallery-right.php" class="mega-menu__link">Gallery Right</a></li>
-                                                    <li class="mega-menu__list"><a href="single-sticky-left.php" class="mega-menu__link">Sticky Left</a></li>
-                                                    <li class="mega-menu__list"><a href="single-sticky-right.php" class="mega-menu__link">Sticky Right</a></li>
-                                                </ul>
-                                            </div>
-                                            <!--Single Megamenu Item Menu-->
+                                            
                                         </li>
                                         <!--Megamenu Item Banner-->
                                         <li class="mega-menu__banner">
