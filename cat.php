@@ -4,6 +4,8 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 //  подключаем шапку сайта 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
+
+
 ?>
 
 <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
@@ -12,8 +14,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         <div class="row">
             <div class="col-12">
                 <ul class="page-breadcrumb__menu">
-                    <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                    <li class="page-breadcrumb__nav active">Shop 5 Grid Page</li>
+                    <li class="page-breadcrumb__nav"><a href="#">Главная</a></li>
+                    <li class="page-breadcrumb__nav active">Вывести Title категори</li>
                 </ul>
             </div>
         </div>
@@ -64,7 +66,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             // делаем запрос
                             $result = $conn->query($sql);
                             // получаем данные в цикле
-                            while($row = mysqli_fetch_assoc($result)){
+                            while($row = mysqli_fetch_assoc($result)) {
 
                             // подключаем карточку с товаром -->
                             include $_SERVER['DOCUMENT_ROOT'] . "/parts/product-card.php";
