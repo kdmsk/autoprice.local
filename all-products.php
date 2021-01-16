@@ -69,18 +69,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                     <div class="product-tab-area">
                     <div class="tab-content ">
                         <div class="tab-pane show active clearfix" id="sort-grid">
-                                 <?php 
-                                    $sql = "SELECT * FROM product";
-                                    $result = $conn->query($sql);
-                                    while($product = mysqli_fetch_assoc($result)) {
-                                    ?>    
+                                
                     
                             <?php
-                                <?php
-                                $sql = "SELECT * FROM product";
-                                $result = $conn->query($sql);
-                                while($product = mysqli_fetch_assoc($result)) {
-                                ?>    
+                                   
 
                                 // Выбираем только 6 товаров с отступом равним значению переменной $offset
                                 $sql = "SELECT * FROM product";
