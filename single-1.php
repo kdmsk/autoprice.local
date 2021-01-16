@@ -1,18 +1,14 @@
 <?php
 // подключим базу даных 
-include "configs/db.php";
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 //  подключаем шапку сайта  
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 
-// если поступил GET  с id товара  проводим запрос в базу для получения даного товара
-if (isset($_GET['id'])) {
-    $sql = "SELECT * FROM product WHERE id = " . $_GET['id'];
+$sql = "SELECT * FROM product WHERE id=" . $_GET["id"];
     $result = $conn->query($sql);
-    $product = mysqli_fetch_assoc($result);
-    // запрос для получения категории товара
-    $catResult = $conn->query('SELECT * FROM cat WHERE id=' . $product['cat_id']);
-    $categore = mysqli_fetch_assoc($catResult);
-}
+    $row = mysqli_fetch_assoc($result);
+    $categoryResult = $conn->query( "SELECT * FROM cat WHERE id=" . $row["cat_id"] );
+    $category = mysqli_fetch_assoc( $categoryResult );
 ?>
     
    <!-- ::::::  Start  Breadcrumb Section  ::::::  -->
@@ -22,7 +18,11 @@ if (isset($_GET['id'])) {
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
                         <li class="page-breadcrumb__nav"><a href="index.php">Главная</a></li>
-                        <li class="page-breadcrumb__nav active"><?php echo $product['brand']; ?></li>
+                        <li class="page-breadcrumb__nav active">
+                            <a href="cat.php?id= <?php echo $category["id"] ?>" >
+                                <?php echo $category["title"] ?> 
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -42,8 +42,8 @@ if (isset($_GET['id'])) {
                                     <!-- БЛОК СЛАЙДЕР С КАРТИНКОЙ ТОВАРА -->
                                     <div class="product-image--large overflow-hidden">
                                         <img class="img-fluid" id="img-zoom" 
-                                         src="<?php echo $product['photo']; ?> "  
-                                         data-zoom-image="<?php echo $product['photo']; ?> " 
+                                         src="img_product/<?php echo $row["photo"] ?>"  
+                                         data-zoom-image="img_product/<?php echo $row["photo"] ?>" 
                                          alt="">
                                     </div>
                                     <div class="pos-relative m-t-30">
@@ -53,7 +53,7 @@ if (isset($_GET['id'])) {
                                                 <div class="swiper-slide">
                                                     <a class="zoom-active" data-image="" data-zoom-image="">
                                                         <img class="img-fluid" 
-                                                        src="<?php echo $product['photo']; ?>" 
+                                                        src="img_product/<?php echo $row["photo"] ?>" 
                                                         alt="">
                                                     </a>
                                                 </div>
@@ -69,8 +69,8 @@ if (isset($_GET['id'])) {
                             </div>
                             <div class="col-md-6">
                                 <div class="product-details-box">
-                                    <h5 class="section-content__title"><?php echo $product['title']; ?></h5>
-                                    <span class="text-reference">Бренд: <?php echo $product['brand']; ?></span>
+                                    <h5 class="section-content__title"><?php echo $row['title']; ?></h5>
+                                    <span class="text-reference">Бренд: <?php echo $row['brand']; ?></span>
                                     <div class="review-box">
                                         <ul class="product__review m-t-10 m-b-15">
                                             <li class="product__review--fill"><i class="icon-star"></i></li>
@@ -83,10 +83,10 @@ if (isset($_GET['id'])) {
                                         <a href="#modalReview" data-toggle="modal" class="link--gray link--icon-left m-b-5"><i class="fal fa-edit"></i> Сровнить</a>
                                     </div>
                                     <div class="product__price">
-                                        <span class="product__price-reg"><?php echo $product['prise']; ?> грн.</span>
+                                        <span class="product__price-reg"><?php echo $row['prise']; ?> грн.</span>
                                     </div>
                                     <div class="product__desc m-t-25 m-b-30">
-                                        <p><?php echo $product['descriptions']; ?> </p>
+                                        <p><?php echo $row['descriptions']; ?> </p>
                                     </div>
                                     <!-- БЛОК ИЗМЕНИТЬ КОЛИЧЕСТВО ТОВАРА И ДОБАВИТ В КОРЗИНУ -->
                                         <div class="product-quantity product-var__item">
@@ -95,7 +95,7 @@ if (isset($_GET['id'])) {
                                                 <div class="quantity">
                                                     <input type="number" min="1" max="9" step="1" value="1">
                                                 </div>
-                                                <a href="#modalAddCart" data-toggle="modal" data-dismiss="modal" class="btn btn--box btn--small btn--blue btn--uppercase btn--weight m-l-20">В корзину</a>
+                                                <a href="#modalAddCart" data-toggle="modal" data-dismiss="modal" onclick="addToCart(this)" data-id="<?php echo $row["id"] ?>" class="btn btn--box btn--small btn--blue btn--uppercase btn--weight m-l-20">В корзину</a>
                                             </div>    
                                         </div>
                                     </div>

@@ -2,7 +2,7 @@
 <?php 
 
 // подключим базу даных 
-include "configs/db.php";
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 //  подключаем шапку сайта 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 ?>
@@ -23,7 +23,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                 while ($row = mysqli_fetch_assoc($result)) {
                                 ?>
                                 <li class="menu-item">
-                                   <a href="product.php?id= <?php echo $row['id']; ?>"><?php echo $row['title'];?></a>
+                                   <a href="cat.php?id= <?php echo $row['id']; ?>"><?php echo $row['title'];?></a>
                                 </li>
                                    <?php
                                 }
@@ -381,7 +381,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                  $result = $conn->query($sql);
                                  $product = mysqli_fetch_assoc($result);                
                             ?>
-                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(<?php echo $product['photo']; ?>);">
+                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(img_product/<?php echo $product['photo']; ?>);">
                                 <div class="hero__content">
                                     <div class="row">
                                         <div class="col-9 offset-1">
@@ -403,7 +403,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                  $result = $conn->query($sql);
                                  $product = mysqli_fetch_assoc($result);                
                             ?>
-                            <div class="hero-img hero-img--2  swiper-slide" style="background-image: url(<?php echo $product['photo']; ?>);">
+                            <div class="hero-img hero-img--2  swiper-slide" style="background-image: url(img_product/<?php echo $product['photo']; ?>);">
                                 <div class="hero__content">
                                     <div class="row">
                                         <div class="col-9 offset-1">
@@ -426,7 +426,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                  $result = $conn->query($sql);
                                  $product = mysqli_fetch_assoc($result);                
                             ?>
-                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(<?php echo $product['photo']; ?>);">
+                            <div class="hero-img hero-img--2 swiper-slide" style="background-image: url(img_product/<?php echo $product['photo']; ?>);">
                                 <div class="hero__content">
                                     <div class="row">
                                         <div class="col-9 offset-1">
@@ -783,9 +783,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         </div>
     </main> <!-- ::::::  End  Main Container Section  ::::::  -->
 
-    <?php
-    include $_SERVER['DOCUMENT_ROOT'] . '/parts/footer.php';
-    ?>
+    
 
     <!-- material-scrolltop button -->
     <button class="material-scrolltop" type="button"></button>
@@ -841,6 +839,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
         </div>
         </div>
     </div> <!-- End Modal Add cart -->
+    <?php
+    include $_SERVER['DOCUMENT_ROOT'] . '/parts/footer.php';
+    ?>
 
 
     <!-- ::::::::::::::All Javascripts Files here ::::::::::::::-->
