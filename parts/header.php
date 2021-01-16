@@ -189,6 +189,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                                             <!--Single Megamenu Item Menu-->
                                             <div class="mega-menu__item-box">
                                                 <span class="mega-menu__title">Категории товаров</span>
+                                                        <?php
                                                         $result = $conn->query($sql);   
                                                         while ($row = mysqli_fetch_assoc($result)) {
                                                         ?>
