@@ -17,7 +17,7 @@ $sql = "SELECT * FROM product WHERE id=" . $_GET["id"];
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
+                        <li class="page-breadcrumb__nav"><a href="index.php">Главная</a></li>
                         <li class="page-breadcrumb__nav active">
                             <a href="cat.php?id= <?php echo $category["id"] ?>" >
                                 <?php echo $category["title"] ?> 

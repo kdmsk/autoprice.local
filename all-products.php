@@ -1,4 +1,7 @@
 <?php 
+// подключим базу даных 
+include "configs/db.php";
+//  подключаем шапку сайта 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 // подключим базу даных 
 include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
@@ -10,8 +13,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                        <li class="page-breadcrumb__nav active">Shop 5 Grid Page</li>
+                        <li class="page-breadcrumb__nav"><a href="index.php">Главная</a></li>
+                        <li class="page-breadcrumb__nav active">Показать все товары</li>
                     </ul>
                 </div>
             </div>
@@ -66,8 +69,18 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                     <div class="product-tab-area">
                     <div class="tab-content ">
                         <div class="tab-pane show active clearfix" id="sort-grid">
+                                 <?php 
+                                    $sql = "SELECT * FROM product";
+                                    $result = $conn->query($sql);
+                                    while($product = mysqli_fetch_assoc($result)) {
+                                    ?>    
                     
                             <?php
+                                <?php
+                                $sql = "SELECT * FROM product";
+                                $result = $conn->query($sql);
+                                while($product = mysqli_fetch_assoc($result)) {
+                                ?>    
 
                                 // Выбираем только 6 товаров с отступом равним значению переменной $offset
                                 $sql = "SELECT * FROM product";
@@ -108,8 +121,23 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
     <!-- Start Modal Add cart -->
     <div class="modal fade" id="modalAddCart" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
-        <div class="modal-content">
+             
+           
+          <div class="modal-content">
             <div class="modal-header">
+                <?php 
+            if (isset($_GET['id'])) {
+                echo "YS";
+                // $sql = "SELECT * FROM product WHERE id=" . $_GET['id'];
+                // $result = $conn->query($sql);
+                // $product = mysqli_fetch_assoc($result);
+                // var_dump($product['title']);
+               
+                } else {
+                    echo "NO";
+                }
+                ?>
+
             <h5 class="modal-title text-center">Product Successfully Added To Your Shopping Cart</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -175,6 +203,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
             ?>
             
         </div>
+  
         </div>
     </div> <!-- End Modal Add cart -->
 
