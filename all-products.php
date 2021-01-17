@@ -1,6 +1,5 @@
 <?php 
-// подключим базу даных 
-include "configs/db.php";
+
 //  подключаем шапку сайта 
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 // подключим базу даных 
@@ -20,17 +19,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
             </div>
         </div>
     </div> <!-- ::::::  End  Breadcrumb Section  ::::::  -->
-
-    <?php
-    // Задаем кол-во отображаемых товаров а странице
-    $count = 6;
-    // Задаем переменной $p значение которое будет в GET запросе ?p="
-    $p = isset ($_GET["p"]) ? (int) $_GET["p"] : 0;
-    // Определяем с какого товара будет начинаться следующая страница
-    $offset = $p * $count;
-    // Выполняем поиск сообщений
-    $i = 0;
-    ?>
 
     <!-- ::::::  Start  Main Container Section  ::::::  -->
     <main id="main-container" class="main-container">
@@ -72,33 +60,16 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                                 
                     
                             <?php
-                                   
+                   //// подключить  пагинацыю  здесь 
 
-                                // Выбираем только 6 товаров с отступом равним значению переменной $offset
-                                $sql = "SELECT * FROM product";
-                                $result = $conn->query($sql);
-                                // Выводим список товаров
-                                while ( $row = mysqli_fetch_assoc($result) ) { 
-                                    include $_SERVER['DOCUMENT_ROOT'] . "/parts/product-card.php";
-                                }
+                    include $_SERVER['DOCUMENT_ROOT'] . "/parts/pagination.php";
+                              
+                                
                             ?>
                                   
                             
                             </div>
                         </div>
-                    </div>
-                    <div class="page-pagination">
-                        <span>Showing 1-12 of 13 item(s)</span>
-                        <ul class="page-pagination__list">
-                            <li class="page-pagination__item">
-                              <a class="page-pagination__link btn btn--gray"  href="#"><i class="icon-chevron-left"></i> Previous</a>
-                            </li>
-                            <li class="page-pagination__item"><a class="page-pagination__link active btn btn--gray"  href="#">1</a></li>
-                            <li class="page-pagination__item"><a class="page-pagination__link btn btn--gray"  href="#">2</a></li>
-                            <li class="page-pagination__item">
-                              <a class="page-pagination__link btn btn--gray"  href="#">Next<i class="icon-chevron-right"></i></a>
-                            </li>
-                          </ul>
                     </div>
                 </div>  <!-- Start Rightside - Content -->
             </div>
@@ -117,19 +88,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
            
           <div class="modal-content">
             <div class="modal-header">
-                <?php 
-            if (isset($_GET['id'])) {
-                echo "YS";
-                // $sql = "SELECT * FROM product WHERE id=" . $_GET['id'];
-                // $result = $conn->query($sql);
-                // $product = mysqli_fetch_assoc($result);
-                // var_dump($product['title']);
-               
-                } else {
-                    echo "NO";
-                }
-                ?>
-
             <h5 class="modal-title text-center">Product Successfully Added To Your Shopping Cart</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -338,6 +296,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 
     <!-- Main js file that contents all jQuery plugins activation. -->
     <script src="assets/js/main.js"></script>
+     <script src="assets/js/pagination.js"></script> 
 </body>
 
 </html>
