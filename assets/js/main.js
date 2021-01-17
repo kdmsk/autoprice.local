@@ -1,9 +1,43 @@
+// создаем переменную в которой указан адрес нашего сайта
+var siteURL = "http://autoprice.local/";
+
+// создаем переменную по селектору для кнопки "Показать еще"
+var btnShowMore = document.querySelector("#show-more");
+if (btnShowMore) {
+	//добавляем клик по кнопке
+	btnShowMore.onclick = function () {
+		//создаем переменную по селектору для скрытого input, который находится в кнопке "Показать еще" в products.php
+		var currentPageInput = document.querySelector("#current-page");
+		//делаем ajax запрос
+		var ajax = new XMLHttpRequest();
+		// открываем запрос и передаем: метод запроса, ссылка по которой мы идем за данными, параметр запроса - синхронный
+		ajax.open(
+			"GET",
+			siteURL + "modules/products/get_more.php?page=" + currentPageInput.value,
+			false
+		);
+		//отправляем запрос
+		ajax.send();
+		//значение переменной currentPageInput = (+ превращает значение в целое число) предыдущее значение +1
+		currentPageInput.value = +currentPageInput.value + 1;
+		//если унас ajax запрос пустой (т.е. больше нет товаров)
+		if (ajax.response == "") {
+			//то скрываем кнопку "Показать еще"
+			btnShowMore.style.display = "none";
+		}
+		//выбираем элемент, куда мы хотим вставить данные полученные через ajax запрос: создаем переменную по селектору для блока с продуктами в products.php
+		var productsBlock = document.querySelector("#sort-grid");
+		// в innerHTML элемента вставляем предыдущий innerHTML + новый
+		productsBlock.innerHTML = productsBlock.innerHTML + ajax.response;
+	};
+}
+
 //создаем функцию для добавления в корзину
 function addToCart (btn){
 	//создаем обьект
 	var ajax = new XMLHttpRequest();
 	//создаем запрос
-	ajax.open("POST", siteURL +"/modules/basket/add-to-cart.php", false);
+	ajax.open("POST", siteURL +"/modules/cart/add-to-cart.php", false);
 	ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	//отправляем запрос
 	ajax.send("id=" + btn.dataset.id);
@@ -24,14 +58,13 @@ function deleteProductBasket(obj,id){
 	//создаем обьект
 	var ajax = new XMLHttpRequest();
 	//создаем запрос
-	ajax.open("POST", siteURL +"/modules/basket/basket_del.php", false);
+	ajax.open("POST", siteURL +"/modules/cart/cart-del.php", false);
 	ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	//отправляем запрос
 	//преобразовыем данные полученные ajax.response в JSON формат
 
 	ajax.send("id=" + id);
-	//вывести на экран
-	alert("Product deleted");
+	
 	obj.parentNode.parentNode.remove();
 	var response = JSON.parse(ajax.response);
 	var btnGoBasket = document.querySelector("#go-basket span");
@@ -44,35 +77,22 @@ function deleteProductBasket(obj,id){
 	Функция для изменения количества товара в корзине
 =============================================*/
 
-// создаем переменную и помещаем в нее элемент users-block
-var inputCount = document.querySelector("#input-count");
-// привязываем функцию к событию
-if(inputCount){
-	function  editCountProductToBasket(obj,id,cost){
-		event.preventDefault();
+function changeCount(obj, id, cost) {
+  var count = obj.value;
+  var ajax = new XMLHttpRequest();
+      const params = "id=" + id + "&count=" + count;
+      ajax.open("POST", siteURL + "/modules/cart/change-count.php", false);
+      ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      
+      ajax.send(params);
+      console.dir(ajax);
 
-		// помещаем в переменную элемент
-		var inputCountText = document.getElementById("input-count#"+id);
-		var costProd = document.getElementById("cost-prod#"+id);
+      var priceTd = document.querySelector(".price" + id);
+      console.dir(priceTd);
+          priceTd.innerText = count * cost;
 
-		// помещаем в переменную значения
-		var inputValue = "count=" + inputCountText.value +
-			"&id=" + id;
 
-		//создаем переменную для AJAX запроса
-		var ajax = new XMLHttpRequest();
-		// открываем AJAX запрос
-		ajax.open( "POST", inputCount.action, false );
-		// код необходимый для POST запроса
-		ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		// посылаем AJAX запрос
-		ajax.send(inputValue);
-		costProd.innerText =  cost*inputCountText.value+"грн";
-
-		var summAllshop = document.querySelector("#summall");
-
-	}
-
+      
 }
 
 

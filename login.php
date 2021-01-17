@@ -39,7 +39,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Главная</a></li>
+                        <li class="page-breadcrumb__nav"><a href="/">Главная</a></li>
                         <li class="page-breadcrumb__nav active">Страница регистрации</li>
                     </ul>
                 </div>

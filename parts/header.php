@@ -1,3 +1,10 @@
+<?php 
+
+// подключим базу даных 
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -47,10 +54,8 @@
                             <div class="header__top-content">
                                 <div class="header__top-content--left">
                                     <div class="contact_cms">
-                                        <span class="cms1">Telephone Сompany: </span>
-                                        <span class="cms2">+38 097 77 77 777</span>
-                                        <span class="cms2">+38 093 77 77 777</span>
-                                        <span class="cms2">+38 066 77 77 777</span>
+                                        <span class="cms1">Telephone Enquiry: </span>
+                                        <span class="cms2">(012) 800 456 789 - 977</span>
                                     </div>
                                 </div>
                                 <div class="header__top-content--right">
@@ -91,7 +96,7 @@
                         <div class="col-lg-3">
                             <div class="header__logo">
                                 <a href="index.php" class="header__logo-link">
-                                    <img src="assets/img/logo/logo-color.jpg" alt="" class="header__logo-img">
+                                    <img src="assets/img/logo/logo1.jpg" alt="" class="header__logo-img">
                                 </a>
                             </div>
                         </div>
@@ -113,13 +118,14 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="header__wishlist-box">
-                                        <!-- ИКОНКА СЕРЦЕ ИЗБРАНЫЕ ТОВАРЫ -->
+                                        <!-- Start Header Wishlist Box -->
                                         <div class="header__wishlist pos-relative">
                                             <a href="wishlist.php" class="header__wishlist-link">
                                                 <i class="icon-heart"></i>
                                                 <span class="wishlist-item-count pos-absolute">3</span>
                                             </a>
-                                        </div> <!-- End ИКОНКА СЕРЦЕ ИЗБРАНЫЕ ТОВАРЫ  -->
+                                        </div> <!-- End Header Wishlist Box -->
+
                                         <?php
 
                                             if(isset($_COOKIE['countBasket'])){
@@ -130,13 +136,12 @@
                                         ?>
 
                                         <!-- Start Header Add Cart Box -->
-
                                         <div class="header-add-cart pos-relative m-l-40">
-                                            <a href="#offcanvas-add-cart__box" class="offcanvas-toggle">
+                                            <a id="go-basket" href="cart.php" class="">
                                                 <i class="icon-shopping-cart"></i>
                                                 <span class="wishlist-item-count pos-absolute"><?php echo $countBasket?></span>
                                             </a>
-                                        </div> <!-- End ИКОНКА КОРЗИНЫ   -->
+                                        </div> <!-- End Header Add Cart Box -->
                                     </div>
                                 </div>
                             </div>
@@ -176,33 +181,150 @@
                                 
                                 <!--Start Single Nav link-->
                                 <li class="header__nav-item pos-relative">
-                                    <a href="/" class="header__nav-link">Главная</a>
+                                    <a href="#" class="header__nav-link">Home <i class="icon-chevron-down"></i></a>
+                                    <!--Single Dropdown Menu-->
+                                    <ul class="dropdown__menu pos-absolute">
+                                        <li class="dropdown__list"><a href="index.php" class="dropdown__link">Home 1</a></li>
+                                    </ul>
+                                    <!--Single Dropdown Menu-->
                                 </li> <!-- End Single Nav link-->
 
                                 <!--Start Single Nav link-->
                                 <li class="header__nav-item pos-relative">
-                                    <a href="#" class="header__nav-link">Меню <i class="icon-chevron-down"></i></a>
+                                    <a href="#" class="header__nav-link">Pages <i class="icon-chevron-down"></i></a>
                                     <!--Single Dropdown Menu-->
                                     <ul class="dropdown__menu pos-absolute">
+                                        <li class="dropdown__list"><a href="about.php" class="dropdown__link">About</a></li>
                                         <li class="dropdown__list"><a href="cart.php" class="dropdown__link">Cart</a></li>
                                         <li class="dropdown__list"><a href="checkout.php" class="dropdown__link">Checkout</a></li>
                                         <li class="dropdown__list"><a href="compare.php" class="dropdown__link">Compare</a></li>
                                         <li class="dropdown__list"><a href="empty-cart.php" class="dropdown__link">Empty Cart</a></li>
                                         <li class="dropdown__list"><a href="wishlist.php" class="dropdown__link">Wishlist</a></li>
+                                        <li class="dropdown__list"><a href="my-account.php" class="dropdown__link">My Account</a></li>
                                         <li class="dropdown__list"><a href="login.php" class="dropdown__link">Login</a></li>
                                     </ul>
                                     <!--Single Dropdown Menu-->
                                 </li> <!-- End Single Nav link-->
-                                <li class="header__nav-item pos-relative">
-                                    <a href="my-account.php" class="header__nav-link">Личный кабинет</a>
-                                </li>
+
                                 <!--Start Single Nav link-->
                                 <li class="header__nav-item pos-relative">
-                                     <a href="contact.php" class="header__nav-link">Контакты</a>
+                                    <a href="all-products.php" class="header__nav-link">Все категории <i class="icon-chevron-down"></i></a>
+                                    <!-- Megamenu Menu-->
+                                    <ul class="mega-menu pos-absolute">
+                                        <li class="mega-menu__box">
+                                            <!--Single Megamenu Item Menu-->
+                                            <div class="mega-menu__item-box">
+                                                <span class="mega-menu__title">Категории товаров</span>
+                                                <ul class="mega-menu__item">
+                                                <?php 
+                                                    // выводим  все категори товаров 
+                                                        $sql = "SELECT * FROM cat";
+                                                        $result = $conn->query($sql);   
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                        ?>
+                                                        <li class="menu-item">
+                                                            <a href="cat.php?id=<?php echo $row['id']; ?>"><?php echo $row['title'];?></a>
+                                                        </li>
+                                                        <?php
+                                                        }
+                                                    ?>
+                                                </ul>
+                                            </div>
+                                            <!--Single Megamenu Item Menu-->
+
+                                            <!--Single Megamenu Item Menu-->
+                                            
+                                        </li>
+                                        <!--Megamenu Item Banner-->
+                                        <li class="mega-menu__banner">
+                                            <a href="shop-1.php" class="mega-menu__banner-link">
+                                                <img src="assets/img/banner/menu-banner.jpg" alt="" class="mega-menu__banner-img">
+                                            </a>
+                                        </li>
+                                        <!--Megamenu Item Banner-->
+                                    </ul>
+                                    <!-- Megamenu Menu-->
+                                </li> <!-- Start Single Nav link-->
+
+                                <!--Start Single Nav link-->
+                                <li class="header__nav-item pos-relative">
+                                    <a href="#" class="header__nav-link">Custom Block <i class="icon-chevron-down"></i></a>
+                                    <!-- Megamenu Menu-->
+                                    <ul class="mega-menu pos-absolute">
+                                        <li class="mega-menu__box">
+                                            <!--Single Megamenu Item Menu-->
+                                            <div class="mega-menu__item-box">
+                                                <span class="mega-menu__title">Women Is Clothes & Fashion</span>
+                                                <ul class="mega-menu__item">
+                                                    <li><p>Shop Women Is Clothing And Accessories And Get Inspired By The Latest Fashion Trends.</p></li>
+                                                </ul>
+                                            </div>
+                                            <!--Single Megamenu Item Menu-->
+
+                                            <!--Single Megamenu Item Menu-->
+                                            <div class="mega-menu__item-box">
+                                                <span class="mega-menu__title">Simple Style</span>
+                                                <ul class="mega-menu__item">
+                                                    <li><p>A New Flattering Style With All The Comfort Of Our Linen.</p></li>
+                                                </ul>
+                                            </div>
+                                            <!--Single Megamenu Item Menu-->
+
+                                            <!--Single Megamenu Item Menu-->
+                                            <div class="mega-menu__item-box">
+                                                <span class="mega-menu__title">Easy Layers</span>
+                                                <ul class="mega-menu__item">
+                                                    <li><p>Endless Styling Possibilities In A Collection Full Of Versatile Pieces.</p></li>
+                                                </ul>
+                                            </div>
+                                            <!--Single Megamenu Item Menu-->
+
+                                        </li>
+                                        <!--Megamenu Item Banner-->
+                                        <li class="mega-menu__banner">
+                                            <a href="shop-1.php" class="mega-menu__banner-link">
+                                                <img src="assets/img/banner/menu-banner.jpg" alt="" class="mega-menu__banner-img">
+                                            </a>
+                                        </li>
+                                        <!--Megamenu Item Banner-->
+                                    </ul>
+                                    <!-- Megamenu Menu-->
+                                </li> <!-- Start Single Nav link-->
+
+                                <!--Start Single Nav link-->
+                                <li class="header__nav-item pos-relative">
+                                    <a href="#" class="header__nav-link">Blog<i class="icon-chevron-down"></i></a>
+                                    <!--Single Dropdown Menu-->
+                                    <ul class="dropdown__menu pos-absolute">
+                                        <li class="dropdown__list">
+                                            <a href="#" class="dropdown__link">Blog Grid</a>
+                                            <ul class="dropdown__submenu pos-absolute">
+                                                <li class="dropdown__submenu-list"><a href="blog-grid-left-sidebar.php" class="dropdown__submenu-link"> Blog Grid Left Sidebar</a></li>
+                                                <li class="dropdown__submenu-list"><a href="blog-grid-right-sidebar.php" class="dropdown__submenu-link"> Blog Grid Right Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown__list">
+                                            <a href="#" class="dropdown__link">Blog List</a>
+                                            <ul class="dropdown__submenu pos-absolute">
+                                                <li class="dropdown__submenu-list"><a href="blog-list-left-sidebar.php" class="dropdown__submenu-link"> Blog List Left Sidebar</a></li>
+                                                <li class="dropdown__submenu-list"><a href="blog-list-right-sidebar.php" class="dropdown__submenu-link"> Blog List Right Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown__list">
+                                            <a href="#" class="dropdown__link">Blog Single</a>
+                                            <ul class="dropdown__submenu pos-absolute">
+                                                <li class="dropdown__submenu-list"><a href="blog-single-left-sidebar.php" class="dropdown__submenu-link"> Blog Single Left Sidebar</a></li>
+                                                <li class="dropdown__submenu-list"><a href="blog-single-right-sidebar.php" class="dropdown__submenu-link"> Blog Single Right Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <!--Single Dropdown Menu-->
                                 </li> <!-- End Single Nav link-->
-                                 <li class="header__nav-item pos-relative">
-                                    <a href="about.php" class="header__nav-link">Наша команда</a>
-                                </li>
+
+                                <!--Start Single Nav link-->
+                                <li class="header__nav-item pos-relative">
+                                     <a href="contact.php" class="header__nav-link">Contact Us</a>
+                                </li> <!-- End Single Nav link-->
                             </ul>
                         </nav>
                     </div>

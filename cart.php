@@ -1,4 +1,6 @@
 <?php 
+//Подключаем файл БД
+include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
 ?>
 
@@ -8,8 +10,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
             <div class="row">
                 <div class="col-12">
                     <ul class="page-breadcrumb__menu">
-                        <li class="page-breadcrumb__nav"><a href="#">Home</a></li>
-                        <li class="page-breadcrumb__nav active">Cart Page</li>
+                        <li class="page-breadcrumb__nav"><a href="/">Главная</a></li>
+                        <li class="page-breadcrumb__nav active">Корзина</li>
                     </ul>
                 </div>
             </div>
@@ -38,57 +40,48 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img class="img-fluid" src="assets/img/cart/cart-1.jpg" alt=""></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Product Name</a></td>
-                                    <td class="product-price-cart"><span class="amount">$60.00</span></td>
-                                    <td class="product-quantities">
-                                        <div class="quantity d-inline-block">
-                                            <input type="number" min="1" step="1" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$70.00</td>
-                                    <td class="product-remove">
-                                        <a href="#"><i class="fa fa-pencil-alt"></i></a>
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img class="img-fluid" src="assets/img/cart/cart-2.jpg" alt=""></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Product Name</a></td>
-                                    <td class="product-price-cart"><span class="amount">$50.00</span></td>
-                                    <td class="product-quantities">
-                                        <div class="quantity d-inline-block">
-                                            <input type="number" min="1" step="1" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$80.00</td>
-                                    <td class="product-remove">
-                                        <a href="#"><i class="fa fa-pencil-alt"></i></a>
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img class="img-fluid" src="assets/img/cart/cart-3.jpg" alt=""></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Product Name</a></td>
-                                    <td class="product-price-cart"><span class="amount">$70.00</span></td>
-                                    <td class="product-quantities">
-                                        <div class="quantity d-inline-block">
-                                            <input type="number" min="1" step="1" value="1">
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$90.00</td>
-                                    <td class="product-remove">
-                                        <a href="#"><i class="fa fa-pencil-alt"></i></a>
-                                        <a href="#"><i class="fa fa-times"></i></a>
-                                    </td>
-                                </tr>
+                            <?php
+                                // Если существует переменная $_COOKIE["basket"]
+                                if(isset($_COOKIE["basket"])) {
+                                    // Помещаем в переменную $basket декодированую строку JSON
+                                    $basket = json_decode($_COOKIE["basket"], true);
+                                    
+                                    // Переменная i = 0; пока переменная i меньше кол-ва товаров в корзине; увеличиваем значение $i++
+                                    for($i = 0; $i < count($basket["basket"]); $i++) {
+                                        // Выбираем все поля из таблицы products где id = значению $basket["basket"]["$i"]
+                                        $sql = "SELECT * FROM product WHERE id=" . $basket["basket"][$i]["product_id"];
+                                        // Выполняем sql запрос
+                                        $result = $conn->query($sql);
+                                        // Преобразовываем полученные данные в массив
+                                        $product = mysqli_fetch_assoc($result);
+                                                
+                            ?>
+                                        
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#"><img class="img-fluid" src="img_product/<?php echo $product["photo"] ?>" alt=""></a>
+                                            </td>
+                                            <td class="product-name"><a href="#"><?php echo $product["title"] ?></a></td>
+                                            <td class="product-price-cart"><span class="amount">$<?php echo $product["prise"] ?></span></td>
+                                            <td class="product-quantities">
+                                                <div class=" d-inline-block">
+                                                    <input type="text"  name="count" oninput="changeCount(this, <?php echo $product['id']; ?>, <?php echo $product['prise']; ?>)" 
+                                                        value="<?php echo $basket["basket"][$i]["count"]; ?>">
+                                                </div>
+                                            </td>
+                                            <td class="<?php echo "price" . $product['id']; ?>">$<?php echo $basket["basket"][$i]["count"] * $product['prise']; ?></td>
+                                            <td class="product-remove">
+                                                <a href=""><i class="fa fa-pencil-alt"></i></a>
+                                                <a onclick="deleteProductBasket(this, <?php echo $product['id']; ?>)" href=""><i class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                            <?php
+                                            
+                                    }
+                                } 
+                                       
+                            ?>
+                                 
                             </tbody>
                         </table>
                     </div>  <!-- End Cart Table -->
@@ -106,60 +99,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                 
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="sidebar__widget gray-bg m-t-40">
-                        <div class="sidebar__box">
-                            <h5 class="sidebar__title">Estimate Shipping And Tax</h5>
-                        </div>
-                        <span>Enter your destination to get a shipping estimate.</span>
-                        <form action="#" method="post" class="form-box">
-                            <div class="form-box__single-group">
-                                <label for="form-country">* Country</label>
-                                <select id="form-country">
-                                    <option value="BD" selected>Bangladesh</option>
-                                    <option value="US">USA</option>
-                                    <option value="UK">UK</option>
-                                    <option value="TR">Turkey</option>
-                                    <option value="CA">Canada</option>
-                                </select>
-                            </div>
-                            <div class="form-box__single-group">
-                                <label for="form-state">* Region / State</label>
-                                <select id="form-state">
-                                    <option value="Dha" selected>Dhaka</option>
-                                    <option value="Kha">Khulna</option>
-                                    <option value="Raj">Rajshahi</option>
-                                    <option value="Syl">Sylet</option>
-                                    <option value="Chi">Chittagong</option>
-                                </select>
-                            </div>
-                            <div class="form-box__single-group">
-                                <label for="form-zipcode">* Zip/Postal Code</label>
-                                <input type="text" id="form-zipcode">
-                            </div>
-                            <div class="from-box__buttons m-t-25">
-                                <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">GET A QUOTE</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="sidebar__widget gray-bg m-t-40">
-                        <div class="sidebar__box">
-                            <h5 class="sidebar__title">Use Coupon Code</h5>
-                        </div>
-                        <span>Enter your coupon code if you have one.</span>
-                        <form action="#" method="post" class="form-box">
-                            <div class="form-box__single-group">
-                                <label for="form-coupon">*Enter Coupon Code</label>
-                                <input type="text" id="form-coupon">
-                            </div>
-                            <div class="from-box__buttons m-t-25">
-                                <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">Apply Coupon</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                
                 <div class="col-lg-4 col-md-6">
                     <div class="sidebar__widget gray-bg m-t-40">
                         <div class="sidebar__box">
@@ -184,7 +124,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/parts/header.php';
                             </ul>
                         </div>
                         <h4 class="grand-total m-tb-25">Grand Total <span>$260.00</span></h4>
-                        <button class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">PROCEED TO CHECKOUT</button>
+                        <a href="checkout.php" class="btn btn--box btn--small btn--blue btn--uppercase btn--weight" type="submit">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
             </div>
