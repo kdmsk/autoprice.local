@@ -150,12 +150,35 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                 </div>
             </div> <!-- End Header Middle area -->
 
+            
+
             <!-- Start Header Menu Area -->
             <div class="header-menu">
                 <div class="container">
                     <div class="row col-12">
                         <nav>
                             <ul class="header__nav">
+
+<?php
+                    // Если существует переменная $_COOKIE["user_id"] (Пользователь в системе)
+                    if(isset($_COOKIE["user_id"])) {
+                        $sql = "SELECT * FROM user WHERE id =" . $_COOKIE["user_id"];
+                        // выполнить sql запрос в базе данных
+                        $result = $conn->query($sql);
+                        $user = mysqli_fetch_assoc($result);
+                    ?>
+                        <!--Создаем ссылку на выход из профиля -->
+                        <a href="logout.php" type="button" class="btn btn-light ml-2"><?php echo $user["name"]; ?> &#187;</a>
+                    <?php
+                    } else {
+                    ?>
+                        <!--Иначе создаем ссылку в Меню на окно Авторизации -->
+                        <a href="login.php" type="button" class="btn btn-primary ml-2">Вход</a>
+                    <?php
+
+                    }
+                    ?>
+                                
                                 <!--Start Single Nav link-->
                                 <li class="header__nav-item pos-relative">
                                     <a href="#" class="header__nav-link">Home <i class="icon-chevron-down"></i></a>
