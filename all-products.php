@@ -36,7 +36,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                                     <li><a class="sort-nav-link" data-toggle="tab" href="#sort-list"><i class="icon-list"></i></a></li>
                                 </ul>
                             </div>
-                            <span>There Are 13 Products.</span>
+                            <span></span>
                         </div> <!-- Start Sort Left Side -->
 
                         <div class="sort-box__right">
@@ -57,17 +57,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/configs/db.php';
                     <div class="product-tab-area">
                     <div class="tab-content ">
                         <div class="tab-pane show active clearfix" id="sort-grid">
-                                
-                    
                             <?php
-                   //// подключить  пагинацыю  здесь 
-
-                    include $_SERVER['DOCUMENT_ROOT'] . "/parts/pagination.php";
-                              
-                                
-                            ?>
-                                  
-                            
+                               //// подключен вывод товаров через   пагинацыю 
+                                include $_SERVER['DOCUMENT_ROOT'] . "/parts/pagination.php";               
+                            ?>            
                             </div>
                         </div>
                     </div>

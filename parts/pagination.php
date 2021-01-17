@@ -63,7 +63,13 @@ if($page != $page_count) $page_setting['last_show'] = 1;
 
 <!-- //// Выводим на экран: кнопки пагинацыи -->
  <div class="page-pagination">
-    <span>пагиннацыя </span>
+ 	<div class="dropdown">
+ 		<input type="hidden" value="1" id="current-page">
+		 <button  type="button" id="show-more"  aria-haspopup="true" aria-expanded="false">
+		    показать ище товары 
+		 </button>
+		 
+	</div>
     <ul class="page-pagination__list">
         <li  class="page-pagination__item">
         	<?php        	

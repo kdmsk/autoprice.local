@@ -26,7 +26,7 @@ if (btnShowMore) {
 			btnShowMore.style.display = "none";
 		}
 		//выбираем элемент, куда мы хотим вставить данные полученные через ajax запрос: создаем переменную по селектору для блока с продуктами в products.php
-		var productsBlock = document.querySelector("#products");
+		var productsBlock = document.querySelector("#sort-grid");
 		// в innerHTML элемента вставляем предыдущий innerHTML + новый
 		productsBlock.innerHTML = productsBlock.innerHTML + ajax.response;
 	};
